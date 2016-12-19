@@ -4,7 +4,8 @@
 \alias{steady_states_numerical}
 \title{Simulate the System and take the last value of the simulation as the values for the steady states}
 \usage{
-steady_states_numerical(pars, time_max = 12000, predfun = (g * x))
+steady_states_numerical(pars = pars_0, time_max = 12000, predfun = (g *
+  x))
 }
 \arguments{
 \item{pars}{The parameters needed for the prediction function}
@@ -15,6 +16,8 @@ steady_states_numerical(pars, time_max = 12000, predfun = (g * x))
 }
 \value{
 The steady state concentrations that were obtained during the simulation.
+ It is a condition-named list of steady_state concentrations with attributes counter_time_max =  c(counter, time_max)
+ If count == 4, the predictions are also appended as attributes to look at the predictions, since in this case, the original time_max_guess has been already increased 1000 times, but steady state has not been reached.
 }
 \description{
 The system is assumed to have reached steady state,

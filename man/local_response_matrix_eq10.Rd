@@ -7,10 +7,10 @@
 local_response_matrix_eq10(R)
 }
 \arguments{
-\item{R}{}
+\item{R}{The matrix of global responses}
 }
 \value{
-r The local response matrix
+r The local response matrix, with the attribute which_pars_perturbed
 }
 \description{
 Calculate the local response matrix r from the global responses

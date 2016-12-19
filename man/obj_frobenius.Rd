@@ -4,12 +4,12 @@
 \alias{obj_frobenius}
 \title{Objective function to minimize certain elements of the local response matrix}
 \usage{
-obj_frobenius(pars_optimization, obj_pars, r_sign_changed)
+obj_frobenius(pars_optimization = pars_opt_0, pars = pars_0,
+  time_max = 12000, predfun = (g * x),
+  which_pars_perturbed = which_pars_perturbed_0, r_fun = r_numDeriv_fun)
 }
 \arguments{
 \item{pars_optimization}{The parameters which are needed to optimize the matrix}
-
-\item{r_sign_changed}{A matrix of logicals specifying the elements to minimize.}
 }
 \value{
 The parameter values for which the sign-changing elements are minimal.

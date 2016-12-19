@@ -10,10 +10,12 @@
 #' @details
 #'
 #' @return The steady state concentrations that were obtained during the simulation.
+#'  It is a condition-named list of steady_state concentrations with attributes counter_time_max =  c(counter, time_max)
+#'  If count == 4, the predictions are also appended as attributes to look at the predictions, since in this case, the original time_max_guess has been already increased 1000 times, but steady state has not been reached.
 #' @export
 #'
 #' @examples
-steady_states_numerical <- function(pars,  time_max = 12000, predfun = (g*x)) {
+steady_states_numerical <- function(pars = pars_0,  time_max = 12000, predfun = (g*x)) {
   flag <- TRUE
   counter <- 1
   while (flag) {
@@ -35,7 +37,11 @@ steady_states_numerical <- function(pars,  time_max = 12000, predfun = (g*x)) {
         counter <<- counter + 1
       } else {
         flag <<- FALSE
-        return(tail_of_mypred[2,]) # steady state values
+        steady_state <- tail_of_mypred[2,]
+        if(counter == 4 ) {attr(steady_state, "prediction") <- mypred[[cond]]
+          warning("In condition", cond, "the steady state criterion has not been met. Look at the prediction (attribute) to see what's happening.")
+          }
+        return(steady_state) # steady state values
       }
     })
   }
@@ -45,83 +51,89 @@ steady_states_numerical <- function(pars,  time_max = 12000, predfun = (g*x)) {
 }
 
 
-#' Global response matrix R as a function of the perturbed parameters
-#'
-#' @param pars_perturbed
-#' @param pars
-#' @param logderiv Logical. TRUE: Compute d ln(x_i) /dp_j, FALSE: d x_i /dp_j
-#'
-#' @return
-#' @export
-#'
-#' @examples
-global_response_matrix <- function(pars_perturbed, pars, time_max = 12000, logderiv = FALSE) {
+# #' Global response matrix R as a function of the perturbed parameters
+# #'
+# #' @param pars_perturbed The perturbed parameters
+# #' @param pars The pars to compute the prediction and steady states
+# #'
+# #' @param logderiv Logical. TRUE: Compute d ln(x_i) /dp_j, FALSE: d x_i /dp_j
+# #'
+# #' @return
+# #' @export
+# #'
+# #' @examples
+# global_response_matrix <- function(pars = pars_0, time_max = 12000, predfun = (g*x), pars_perturbed, logderiv = FALSE) {
+#
+#   steady_states_0 <- steady_states_numerical(pars = pars, time_max = time_max, predfun = predfun)[[1]] #right now just for one condition
+#
+#   conditions <- names(steady_states_0)
+#
+#
+#   sapply(names(pars_perturbed), function(i) {
+#
+#     delta_p <- pars_perturbed[i]-pars[i]
+#     mypars <- pars
+#     mypars[i] <- pars_perturbed[i] # Apply the perturbation
+#
+#     new_steady_states <- steady_states_numerical(pars = mypars, time_max = time_max, predfun = predfun)[[1]]
+#
+#     deriv <- (new_steady_states-steady_states_0)/delta_p
+#
+#     if(logderiv) deriv <- deriv / steady_states_0
+#
+#     return(deriv)
+#   })
+#
+# }
+#
 
-  steady_states_0 <- steady_states_numerical(pars = pars, time_max = time_max)[[1]] #right now just for one condition
-
-  sapply(names(pars_perturbed), function(i) {
-
-    delta_p <- pars_perturbed[i]-pars[i]
-    new_pars <- pars
-    new_pars[i] <- pars_perturbed[i] # Apply the perturbation
-
-    new_steady_states <- steady_states_numerical(pars = new_pars, time_max = time_max)[[1]]
-
-    deriv <- (new_steady_states-steady_states_0)/delta_p
-
-    if(logderiv) deriv <- deriv / steady_states_0
-
-    return(deriv)
-  })
-
-}
-
-
-#' Global response matrix R
-#'
-#' @param pars_perturbed
-#' @param pars
-#'
-#' @description This version calculates d ln x_i/dp_j as suggested in the paper
-#'
-#' @return
-#' @export
-#'
-#' @examples
-global_response_matrix_fractional <- function(pars_perturbed, pars) {
-
-  steady_states_0 <- steady_states_numerical(pars = pars)[[1]] #right now just for one condition
-
-  sapply(names(pars_perturbed), function(i) {
-
-    new_pars <- pars
-    new_pars[i] <- pars_perturbed[i] # Apply the perturbation
-
-    new_steady_states <- steady_states_numerical(pars = new_pars)[[1]]
-
-    logderiv <- 2*(new_steady_states-steady_states_0)/(new_steady_states+steady_states_0)
-
-    return(logderiv)
-  })
-
-}
+# #' Global response matrix R from fractional changes
+# #'
+# #' @param pars_perturbed The perturbed parameters
+# #' @param pars The pars to compute the prediction and steady states
+# #'
+# #' @description This version calculates d ln x_i/dp_j as suggested in the paper
+# #'
+# #' @return
+# #' @export
+# #'
+# #' @examples
+# global_response_matrix_fractional <- function(pars_perturbed, pars) {
+#
+#   steady_states_0 <- steady_states_numerical(pars = pars)[[1]] #right now just for one condition
+#
+#   sapply(names(pars_perturbed), function(i) {
+#
+#     mypars <- pars
+#     mypars[i] <- pars_perturbed[i] # Apply the perturbation
+#
+#     new_steady_states <- steady_states_numerical(pars = mypars)[[1]]
+#
+#     logderiv <- 2*(new_steady_states-steady_states_0)/(new_steady_states+steady_states_0)
+#
+#     return(logderiv)
+#   })
+#
+# }
 
 
 
 
 #' Calculate the local response matrix r from the global responses
 #'
-#' @param R
+#' @param R The matrix of global responses
 #'
 #' @details
 #'
-#' @return r The local response matrix
+#' @return r The local response matrix, with the attribute which_pars_perturbed
 #' @export
 #'
 #' @examples
 local_response_matrix_eq10 <- function(R) {
 
   R_svd <- svd(R)
+
+  which_pars_perturbed <- colnames(R)
 
   condition_number <- R_svd$d[1]/R_svd$d[length(R_svd$d)]
   if(abs(condition_number) > 1e12) warning("R is ill conditioned. Condition number is ", condition_number)
@@ -132,57 +144,138 @@ local_response_matrix_eq10 <- function(R) {
 
   r <-  - R_inv / R_inv_diag
   dimnames(r) <- list(rownames(R), rownames(R))
+  attr(r, "which_pars_perturbed") <- which_pars_perturbed
   return(r)
 }
 
-
-
-#' Retrieve the local response matrix from the sensitivity equations
+#' Title
 #'
-#' @param pars The parameters for which r shall be computed
+#' This function only works for one condition
 #'
-#' @return
-#' @export
-#'
-#' @examples
-r_sens_fun <- function(pars_perturbed, pars, time_max = 12000) {
-
-  # time_max <- steady_states_numerical(pars) %>% attr("counter_time_max") %>% extract(2)
-  times <- seq(1,time_max,by = 10)
-  mypred <- (g*x)(times, pars_0, deriv = T)
-  mysteady_state <- mypred[[1]][length(times),]
-
-  myderiv <- attr(mypred[[1]], "deriv")[length(times),]
-  derivnames <- outer(modules, names(pars_perturbed), paste, sep = ".")
-
-  myderiv <- myderiv[derivnames] %>% matrix(nrow = length(modules), ncol = length(pars_perturbed))
-  dimnames(myderiv) = list(modules, names(pars_perturbed))
-
-  r_sens <- local_response_matrix_eq10(myderiv)
-  attr(r_sens, "R") <- myderiv
-  return(r_sens)
-}
-
-
-
-#' Local response matrix r as a function of the some explicitly specified parameters
-#'
-#' @description The local response matrix r is computed with the standard set of parameters "pars".
-#' If a parameter is given in pars_optimization, this value is taken instead.
-#'
+#' @param pars
+#' @param time_max
+#' @param predfun
+#' @param which_pars_perturbed
 #' @param pars_optimization
 #'
 #' @return
 #' @export
 #'
 #' @examples
-r_opt_fun <- function(pars_optimization,pars, time_max = 12000) {
+r_numDeriv_fun <- function(pars = pars_0,
+                           time_max = 12000,
+                           predfun = (g*x),
+                           which_pars_perturbed = which_pars_perturbed_0,
+                           pars_optimization = NULL) {
 
-  newpars <- pars
-  newpars[names(pars_optimization)] = pars_optimization
+  # time_max <- steady_states_numerical(pars = pars, time_max = time_max) %>% attr("counter_time_max") %>% extract(2)
+  times <- seq(1,time_max,by = 100)
 
-  return(global_response_matrix(pars_perturbed = pars_perturbed, pars = newpars, time_max = time_max) %>% local_response_matrix_eq10)
+  if(!is.null(pars_optimization)) pars[names(pars_optimization)] <- pars_optimization
+
+  conditions <- attr(predfun, "conditions")
+  if(is.null(conditions)) conditions <- 1
+
+  # define a function that puts out the steady states as a function of pars_perturbed
+  reduced_steady_states <- function(pars_perturbed) {
+    mypars <- pars
+    mypars[which_pars_perturbed] <- pars_perturbed
+    steady_states_numerical(pars = mypars, time_max = time_max, predfun = predfun)[[1]]
+  }
+
+  pars_perturbed <- pars[which_pars_perturbed]
+
+  myderiv <- numDeriv::jacobian(reduced_steady_states, pars_perturbed)
+
+  dimnames(myderiv) = list(modules, which_pars_perturbed)
+
+  r_sens <- local_response_matrix_eq10(myderiv)
+  attr(r_sens, "R") <- myderiv
+  attr(r_sens, "steady_state") <- steady_states_numerical(pars = pars, time_max = time_max, predfun = predfun)[[1]]
+
+  out <- list(r_sens)
+  names(out) <- conditions
+
+  return(out)
 }
+
+
+#' Retrieve the local response matrix from the sensitivity equations
+#'
+#' @param pars The parameters for which r shall be computed
+#' @param which_pars_perturbed The perturbations
+#' @param time_max First guess for the steady states
+#' @param predfun Prediction function
+#' @param pars_optimization
+#'
+#' @details The prediction function can also incorporate more than one condition.
+#'
+#' @return A conditions-named list of local response matrices "r" with attributes "R" and "steady state".
+#' @export
+#'
+#' @examples
+r_sens_fun <- function(pars = pars_0,
+                       time_max = 12000,
+                       predfun = (g*x),
+                       which_pars_perturbed = which_pars_perturbed_0,
+                       pars_optimization = NULL) {
+
+  # time_max <- steady_states_numerical(pars = pars, time_max = time_max) %>% attr("counter_time_max") %>% extract(2)
+  times <- seq(1,time_max,by = 100)
+
+  if(!is.null(pars_optimization)) pars[names(pars_optimization)] <- pars_optimization
+
+  mypred <- predfun(times, pars, deriv = T)
+
+  conditions <- attr(predfun, "conditions")
+  if(is.null(conditions)) conditions <- 1
+
+  out <- lapply(conditions, function(cond) {
+    my_steady_state <- mypred[[cond]][length(times),]
+
+    myderiv <- attr(mypred[[cond]], "deriv")[length(times),]
+    derivnames <- outer(modules, which_pars_perturbed, paste, sep = ".")
+
+    myderiv <- myderiv[derivnames] %>% matrix(nrow = length(modules), ncol = length(which_pars_perturbed))
+    dimnames(myderiv) = list(modules, which_pars_perturbed)
+
+    r_sens <- local_response_matrix_eq10(myderiv)
+    attr(r_sens, "R") <- myderiv
+    attr(r_sens, "steady_state") <- my_steady_state
+
+    return(r_sens)
+  })
+
+  names(out) <- conditions
+
+  return(out)
+
+}
+
+
+
+# #' Local response matrix r as a function of the some explicitly specified parameters
+# #'
+# #' @description The local response matrix r is computed with the standard set of parameters "pars".
+# #' If a parameter is given in pars_optimization, this value is taken instead.
+# #'
+# #' @param pars_optimization
+# #'
+# #' @return
+# #' @export
+# #'
+# #' @examples
+# r_opt_fun_factory <- function(pars_perturbed, pars = pars_0, predfun = (g*x), time_max = 12000) {
+#
+#   mypars <- pars
+#
+#   r_opt_fun <- function(pars_optimization) {
+#     mypars[names(pars_optimization)] = pars_optimization
+#     return(global_response_matrix(pars_perturbed = pars_perturbed, pars = newpars, time_max = time_max) %>% local_response_matrix_eq10)
+#   }
+#
+#   return(r_opt_fun)
+# }
 
 
 
@@ -192,18 +285,44 @@ r_opt_fun <- function(pars_optimization,pars, time_max = 12000) {
 #'
 #' @param pars_optimization
 #' @param pars
+#' @param time_max
+#' @param predfun
+#' @param which_pars_perturbed
 #'
 #' @return
 #' @export
 #'
 #' @examples
-r_sign_changed_fun <- function(pars_optimization, pars) {
-  pars_optimization <- structure(rep(0, length(pars_optimization)), names = names(pars_optimization))
-  r_0 <- r_opt_fun(pars_optimization = pars_optimization, pars = pars)
-  r_1 <- r_opt_fun(pars_optimization = pars_optimization+1, pars = pars)
-  # r_05 <- r_opt_fun(pars_optimization = pars_optimization+0.5, pars = pars)
+r_sign_changed_fun <- function(pars = pars_0,
+                               time_max = 12000,
+                               predfun = (g*x),
+                               which_pars_perturbed = which_pars_perturbed_0,
+                               pars_optimization = pars_opt_0,
+                               r_fun = r_numDeriv_fun) {
 
-  out <- (sign(r_0) - sign(r_1)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
+  pars_optimization <- structure(rep(0, length(pars_optimization)), names = names(pars_optimization))
+
+  r_0 <- r_fun(pars = pars,
+                    time_max = time_max,
+                    predfun = predfun,
+                    which_pars_perturbed = which_pars_perturbed,
+                    pars_optimization = pars_optimization)
+
+  r_1 <- r_fun(pars = pars,
+                    time_max = time_max,
+                    predfun = predfun,
+                    which_pars_perturbed = which_pars_perturbed,
+                    pars_optimization = pars_optimization + 1)
+
+  conditions <- attr(predfun, "conditions")
+  if(is.null(conditions)) conditions <- 1;
+
+  out <- lapply(conditions, function(cond) {
+    (sign(r_0[[cond]]) - sign(r_1[[cond]])) %>% as.logical() %>% matrix(nrow = nrow(r_0[[cond]]))
+  })
+
+  names(out) <- conditions
+
   return(out)
 }
 
@@ -213,23 +332,48 @@ r_sign_changed_fun <- function(pars_optimization, pars) {
 #' This function squares all elements that flip sign once the complexes are added to the observation.
 #' This can then be used to minimize the values.
 #'
+#' @param pars
+#' @param time_max
+#' @param predfun
+#' @param which_pars_perturbed
 #' @param pars_optimization The parameters which are needed to optimize the matrix
-#' @param r_sign_changed A matrix of logicals specifying the elements to minimize.
 #'
 #' @return The parameter values for which the sign-changing elements are minimal.
 #' @export
 #'
 #' @examples
-obj_frobenius <- function(pars_optimization, obj_pars, r_sign_changed) {
+obj_frobenius <- function(pars_optimization = pars_opt_0,
+                          modelpars = pars_0,
+                          time_max = 12000,
+                          predfun = (g*x),
+                          which_pars_perturbed = which_pars_perturbed_0,
+                          r_fun = r_numDeriv_fun) {
 
-  elements_fun  <- function(pars_optimization) r_opt_fun(pars_optimization = pars_optimization, pars = pars)[r_sign_changed]
+  conditions <- attr(predfun, "conditions")
+  if(is.null(conditions)) conditions <- 1;
+
+  # unfortunately I have to abandon the conditions here :( Only one condition allowed from here
+
+  r_sign_changed <- r_sign_changed_fun(pars = modelpars,
+                                       time_max = time_max,
+                                       predfun = predfun,
+                                       which_pars_perturbed = which_pars_perturbed,
+                                       pars_optimization = pars_optimization,
+                                       r_fun = r_fun)[[1]]
+
+  elements_fun  <- function(pars_opt) r_fun(pars = modelpars,
+                                                          time_max = time_max,
+                                                          predfun = predfun,
+                                                          which_pars_perturbed = which_pars_perturbed,
+                                                          pars_optimization = pars_opt)[[1]][r_sign_changed]
+
   elements      <- elements_fun(pars_optimization)
   elements_jac  <- numDeriv::jacobian(elements_fun, pars_optimization)
 
-  value   <- elements^2 %>% sum()
-  grad    <- 2*(t(elements)%*%elements_jac) %>% as.numeric %>% structure(names = names(pars_optimization))
-  # hessian <- 2*(t(elements_jac) %*% elements_jac) %>% structure(dimnames = list(names(pars_optimization),names(pars_optimization)))
-  hessian <- matrix(0, nrow = length(pars_optimization), ncol = length(pars_optimization)) %>% structure(dimnames = list(names(pars_optimization),names(pars_optimization)))
+  value   <- (elements^2) %>% sum()
+  grad    <- (2*(t(elements)%*%elements_jac)) %>% as.numeric %>% structure(names = names(pars_optimization))
+  hessian <- 2*(t(elements_jac) %*% elements_jac) %>% structure(dimnames = list(names(pars_optimization),names(pars_optimization)))
+  # hessian <- matrix(0, nrow = length(pars_optimization), ncol = length(pars_optimization)) %>% structure(dimnames = list(names(pars_optimization),names(pars_optimization)))
 
   return(list(value = value, gradient = grad, hessian = hessian))
 }
@@ -249,7 +393,7 @@ obj_frobenius <- function(pars_optimization, obj_pars, r_sign_changed) {
 #' @export
 #'
 #' @examples
-dose_response_fun <- function(par_dose, dosages, pars, predfun = (g*x*p)) {
+dose_response_fun <- function(par_dose, dosages, pars, predfun = (g*x)) {
 
   d_r <- mclapply(dosages, function(i) {
     mypars <- pars
@@ -276,7 +420,7 @@ dose_response_fun <- function(par_dose, dosages, pars, predfun = (g*x*p)) {
 #' @param ic_list Named list of parameter values to be set.
 #' @param pars The original set of parameters to be replaced.
 #'
-#' @return
+#' @return A "parfn" of all conditions.
 #' @export
 #'
 #' @examples
@@ -297,9 +441,66 @@ p_ic_fun <- function(ic_list, pars = pars_0) {
   return(p_ic)
 }
 
+#' Generate a list of parameter trafos.
+#'
+#' This function is similar to p_ic_fun, but it returns a list of parfns.
+#' `p_ic_list` needs to be used like `lapply(p_ic_list, function(p_ic) {...(g*x*p_ic)})`.
+#' This allows to do optimization over more than one condition (e.g. replace the dots by `obj`).
+#'
+#' @param ic_list Named list of parameter values to be set.
+#' @param pars The original set of parameters to be replaced.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+p_ic_list_fun <- function(ic_list, pars = pars_0) {
+
+  mydf <- expand.grid(ic_list)
+
+  p_ic_list <- lapply(1:nrow(mydf), function(i) {
+    mytrafo <- structure(names(pars), names = names(pars))
+    myics <- mydf[i,] %>% as.character %>% structure(names = names(ic_list))
+    mytrafo[names(myics)] <- myics
+    p <- P(mytrafo, condition = paste0(names(myics), myics, collapse = "_"))
+  })
+
+  names(p_ic_list) <- lapply(p_ic_list, function(p_ic) attr(p_ic, "conditions")) %>% do.call(c,.)
+
+  return(p_ic_list)
+}
+
+
+#' The runtime of some code
+#'
+#' @param code
+#'
+#' @return The result of the code
+#' @export
+#'
+#' @examples
+runtime <- function( code ) {
+
+  pt <- proc.time()
+  out <- code
+  pt <- proc.time()-pt
+  attr(out, "runtime") <- pt
+  return(out)
+}
 
 
 
+frobenius_fit_analysis <- function(fit, fit_args) {
+  g <- fit_args$g
+  p <- fit_args$p
+  pars <- fit_args$pars
+  deriv <- fit_args$deriv
+
+  pars_opt <- fit$argument
+
+  r_fun <- if(deriv == "sens") r_sens_fun else r_numDeriv_fun
 
 
+
+}
 

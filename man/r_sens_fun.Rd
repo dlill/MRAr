@@ -4,12 +4,27 @@
 \alias{r_sens_fun}
 \title{Retrieve the local response matrix from the sensitivity equations}
 \usage{
-r_sens_fun(pars)
+r_sens_fun(pars = pars_0, time_max = 12000, predfun = (g * x),
+  which_pars_perturbed = which_pars_perturbed_0, pars_optimization = NULL)
 }
 \arguments{
 \item{pars}{The parameters for which r shall be computed}
+
+\item{time_max}{First guess for the steady states}
+
+\item{predfun}{Prediction function}
+
+\item{which_pars_perturbed}{The perturbations}
+
+\item{pars_optimization}{}
+}
+\value{
+A conditions-named list of local response matrices "r" with attributes "R" and "steady state".
 }
 \description{
 Retrieve the local response matrix from the sensitivity equations
+}
+\details{
+The prediction function can also incorporate more than one condition.
 }
 

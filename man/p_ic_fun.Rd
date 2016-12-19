@@ -11,6 +11,9 @@ p_ic_fun(ic_list, pars = pars_0)
 
 \item{pars}{The original set of parameters to be replaced.}
 }
+\value{
+A "parfn" of all conditions.
+}
 \description{
 This function can be used, if one wants quickly wants to check the behaviour of the model with different parameters.
 The named list ic_list contains all the parameter values that one wants to try out.

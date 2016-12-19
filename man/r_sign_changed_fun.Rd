@@ -4,10 +4,12 @@
 \alias{r_sign_changed_fun}
 \title{Determine which signs have flipped over by including the complexes}
 \usage{
-r_sign_changed_fun(pars_optimization, pars)
+r_sign_changed_fun(pars = pars_0, time_max = 12000, predfun = (g * x),
+  which_pars_perturbed = which_pars_perturbed_0,
+  pars_optimization = pars_opt_0, r_fun = r_numDeriv_fun)
 }
 \arguments{
-\item{pars}{}
+\item{which_pars_perturbed}{}
 }
 \description{
 To do: have a look at what happens, if pars_opt = .5 or combinations of pars_opt (eg c(0,1), c(1,0) ...)
