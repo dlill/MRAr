@@ -1,6 +1,6 @@
 Package: MRAr
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Functions to do MRA with
 Version: 0.1.0
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
 Description: More about what it does (maybe more than one line)
@@ -12,5 +12,6 @@ Depends:
     numDeriv,
     tidyr,
     magrittr,
-    plyr
+    plyr,
+    xtable
 RoxygenNote: 5.0.1
