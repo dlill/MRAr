@@ -4,7 +4,7 @@
 \alias{r_sens_fun}
 \title{Retrieve the local response matrix from the sensitivity equations}
 \usage{
-r_sens_fun(pars = pars_0, predfun = (g * x), deparsed_predfun = NULL,
+r_sens_fun(pars = pars_0, predfun = (g * xs),
   which_pars_perturbed = which_pars_perturbed_0, pars_optimization = NULL)
 }
 \arguments{

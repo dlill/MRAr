@@ -4,7 +4,7 @@
 \alias{r_numDeriv_fun}
 \title{Title}
 \usage{
-r_numDeriv_fun(pars = pars_0, predfun = (g * x), deparsed_predfun = NULL,
+r_numDeriv_fun(pars = pars_0, predfun = (g * xs),
   which_pars_perturbed = which_pars_perturbed_0, pars_optimization = NULL)
 }
 \arguments{

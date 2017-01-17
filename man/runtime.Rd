@@ -7,7 +7,7 @@
 runtime(code)
 }
 \arguments{
-\item{code}{}
+\item{code}{Any R code to be executed.}
 }
 \value{
 The result of the code

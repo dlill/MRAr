@@ -62,16 +62,15 @@ p_ic_list_fun <- function(ic_list, pars = pars_0) {
 
 #' The runtime of some code
 #'
-#' @param code
+#' @param code Any R code to be executed.
 #'
 #' @return The result of the code
 #' @export
 #'
 #' @examples
 runtime <- function( code ) {
-
   pt <- proc.time()
-  out <- code
+  out <- {code}
   pt <- proc.time()-pt
   attr(out, "runtime") <- pt
   return(out)
