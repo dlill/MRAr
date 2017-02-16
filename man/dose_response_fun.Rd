@@ -4,10 +4,10 @@
 \alias{dose_response_fun}
 \title{Compute dose-response curves}
 \usage{
-dose_response_fun(par_dose, dosages, pars, predfun = (g * xs))
+dose_response_fun(which_par, dosages, pars = pars_0, predfun = (g * xs))
 }
 \arguments{
-\item{par_dose}{Character of length 1: Which par to perturb}
+\item{which_par}{Character of length 1: Which par to perturb}
 
 \item{dosages}{Numeric including the dosages eq(1,50,by = 1)}
 

@@ -8,7 +8,7 @@
 #' Compute the steady state dose-response of a parameter.
 #' Put the dose response out in a tidy data format.
 #'
-#' @param par_dose Character of length 1: Which par to perturb
+#' @param which_par Character of length 1: Which par to perturb
 #' @param dosages Numeric including the dosages eq(1,50,by = 1)
 #' @param pars
 #' @param predfun
@@ -17,14 +17,15 @@
 #' @export
 #'
 #' @examples
-dose_response_fun <- function(par_dose, dosages, pars, predfun = (g*xs)) {
+dose_response_fun <- function(which_par, dosages, pars = pars_0, predfun = (g*xs)) {
 
   d_r <- mclapply(dosages, function(i) {
     mypars <- pars
-    mypars[par_dose] = i
+    mypars[which_par] = i
     conditions <- attr(predfun, "conditions")
+    if(is.null(conditions)) conditions <- "1"
     my_steady_states <-  data.frame(condition = conditions,
-                                    par_dose = i,
+                                    which_par = i,
                                     do.call(rbind, predfun(times = c(0,Inf),  pars = mypars, deriv = F)))
   }, mc.cores = 4) %>% do.call(rbind, .)
 
@@ -33,12 +34,22 @@ dose_response_fun <- function(par_dose, dosages, pars, predfun = (g*xs)) {
 
   dose_response_colnames <- colnames(d_r)[-c(1:2)]
 
-  d_r <- gather_(data = d_r, key_col = "observable", value_col =  "concentration", gather_cols = dose_response_colnames, factor_key = T)
+  d_r <- gather_(data = d_r, key_col = "name", value_col =  "value", gather_cols = dose_response_colnames, factor_key = T)
   return(d_r)
 
 }
 
-
+#' Plot dose_response curves
+#'
+#' @param dr
+#'
+#' @return
+#' @export
+#'
+#' @examples
+plot_dose_response <- function(dr) {
+  ggplot(dr, aes(x = log(which_par), y = log(value), color = condition)) + facet_wrap(facets = ~name) + geom_line()+theme_dMod()
+}
 
 
 
