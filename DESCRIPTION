@@ -2,16 +2,14 @@ Package: MRAr
 Type: Package
 Title: Functions to do MRA with
 Version: 0.1.0
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: More about what it does (maybe more than one line)
+Authors@R: person("Daniel", "Lill", email = "daniel.lill@physik.uni-freiburg.de", role = c("aut", "cre"))
+Description: This is a personal package to do some simulations on Modular Response Analysis.
+  It highly depends on dMod.
 License: What license is it under?
 LazyData: TRUE
 Depends:
     dMod,
     deSolve,
     numDeriv,
-    tidyr,
-    magrittr,
-    plyr,
-    xtable
+    magrittr
 RoxygenNote: 5.0.1

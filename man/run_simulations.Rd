@@ -4,9 +4,9 @@
 \alias{run_simulations}
 \title{Run the optimization procedure at many conditions}
 \usage{
-run_simulations(ic_list = NULL, nfits = 10, pars_opt = pars_opt_0,
-  obs_fun = g, pars = pars_0,
-  which_pars_perturbed = which_pars_perturbed_0, fixed = NULL)
+run_simulations(ic_list = NULL, nfits = 10, cores = 3,
+  pars_opt = pars_opt_0, obs_fun = g, pars = pars_0,
+  which_pars_perturbed = which_pars_perturbed_0, fixed = NULL, alpha = 1)
 }
 \arguments{
 \item{p_ic_list}{}
@@ -20,5 +20,17 @@ xs(times, c(pars_raw, ic_raw))
 pars_0, pars_opt_0
 
 which_pars_perturbed_0, p_pert
+}
+\examples{
+Debugging
+i <- 1
+ic <- 2
+ic_list <- ic_list_list[[i]]
+nfits <- 2
+cores <- 2
+pars <- pars_list[[i]]
+which_pars_perturbed <- which_pars_perturbed_list[[i]]
+obs_fun <- obs_fun_list[[i]]
+pars_opt <- pars_opt_0
 }
 

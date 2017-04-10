@@ -5,16 +5,26 @@
 \title{Which elements to keep in the optimization procedure?}
 \usage{
 r_kept_fun(pars_opt = pars_opt_0,
-  perturbation_prediction = perturbation_prediction_0, obs_fun = g,
-  p_fun = p_pert, pars = pars_0)
+  perturbation_prediction = perturbation_prediction_0, obs_fun = g0,
+  p_fun = p_pert, pars = pars_0, alpha = 1)
 }
 \arguments{
-\item{which_pars_perturbed}{}
+\item{perturbation_prediction}{}
+
+\item{obs_fun}{}
+
+\item{p_fun}{}
+
+\item{pars}{}
+
+\item{obs_fun_2}{}
 }
 \description{
-Elements are kept if they are either small or if they change sign when switching on the complexes.
+This function compares the connection coefficient in the local response matrices
+when either active forms or complexes are used as a communicating species.
+It takes two observation functions, one with complex being the "standard" cs and one with the free form bein the standard cs.
 }
 \details{
-To do: have a look at what happens, if pars_opt = .5 or combinations of pars_opt (eg c(0,1), c(1,0) ...)
+"Standard" in the sense from above: m2+a*cme -> m2 is the standard in this one.
 }
 

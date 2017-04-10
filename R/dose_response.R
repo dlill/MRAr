@@ -1,8 +1,3 @@
-
-
-
-
-
 #' Compute dose-response curves
 #'
 #' Compute the steady state dose-response of a parameter.

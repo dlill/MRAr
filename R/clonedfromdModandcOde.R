@@ -162,7 +162,7 @@ Xs_steady <- function(odemodel, forcings=NULL, events=NULL, names = NULL, condit
     optionsSens = optionsSens
   )
 
-  P2X <- function(times, pars, deriv=TRUE){
+  P2X <- function(times, pars, deriv=FALSE){
 
 
     yini <- pars[variables]
