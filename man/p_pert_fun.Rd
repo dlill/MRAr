@@ -4,14 +4,10 @@
 \alias{p_pert_fun}
 \title{Convenient simulation of perturbation experiments}
 \usage{
-p_pert_fun(which_pars_perturbed = which_pars_perturbed_0,
-  perturbation_strength = 1.1, pars = pars_0)
+p_pert_fun(pars_perturbed = pars_perturbed_0, pars = pars_0)
 }
 \arguments{
-\item{which_pars_perturbed}{The names of the parameters to be perturbed.}
-
-\item{perturbation_strength}{The fold-change of the parameter on linear scale.
-Either one value to set all of them to the same strength or a numeric vector with the individual perturbation strengths.}
+\item{pars_perturbed}{A named vector with the fold-changes on the linear scale of the perturbed parameters.}
 
 \item{pars}{All parameters of the model.}
 }

@@ -3,33 +3,25 @@
 #'
 #' A parameter transformation function to conveniently generate conditions, in which on parameter was perturbed
 #'
-#' @param which_pars_perturbed The names of the parameters to be perturbed.
-#' @param perturbation_strength The fold-change of the parameter on linear scale.
-#' Either one value to set all of them to the same strength or a numeric vector with the individual perturbation strengths.
+#' @param pars_perturbed A named vector with the fold-changes on the linear scale of the perturbed parameters.
 #' @param pars All parameters of the model.
 #'
 #' @return A parameter trafo function of class parfn.
 #' @export
 #'
 #' @examples
-p_pert_fun <- function(which_pars_perturbed = which_pars_perturbed_0,
-                       perturbation_strength = 1.1,
+p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
                        pars = pars_0) {
-
-  if(length(perturbation_strength) == 1)
-    perturbation_strength <- rep_len(perturbation_strength, length.out = length(which_pars_perturbed))
-  if(length(perturbation_strength) < length(which_pars_perturbed))
-    stop("Number of perturbation_strength strengths not equal to number of perturbed parameters.")
 
 
   p_control <- P(structure(names(pars), names = names(pars)), condition = "Ctr")
 
-  p_pert_list <- lapply(seq_along(which_pars_perturbed), function(i) {
+  p_pert_list <- lapply(seq_along(pars_perturbed), function(i) {
     mytrafo <- structure(names(pars), names = names(pars))
 
-    mytrafo[which_pars_perturbed[i]] <- paste0(which_pars_perturbed[i], "*", perturbation_strength[i])
+    mytrafo[names(pars_perturbed)[i]] <- paste0(names(pars_perturbed)[i], "*", pars_perturbed[i])
 
-    p <- P(mytrafo, condition = paste0(which_pars_perturbed[i], "*", perturbation_strength[i]))
+    p <- P(mytrafo, condition = paste0(names(pars_perturbed)[i], "*", pars_perturbed[i]))
   })
 
   p_pert <- NULL
