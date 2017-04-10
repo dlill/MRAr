@@ -23,13 +23,14 @@ run_simulations <- function(ic_list = NULL,
                             pars = pars_0,
                             pars_perturbed = pars_perturbed_0,
                             fixed = NULL,
-                            alpha = 1) {
+                            alpha = 1,
+                            mixed = FALSE) {
 
 
   p_pert <- p_pert_fun(pars_perturbed = pars_perturbed,
                        pars = pars)
 
-  if(is.null(ic_list)) p_ic_list <- list(P(structure(names(pars), names = names(pars)))) else p_ic_list <- p_ic_list_fun(ic_list)
+  if(is.null(ic_list)) p_ic_list <- list(P(structure(names(pars), names = names(pars)))) else p_ic_list <- p_ic_list_fun(ic_list, mixed = mixed)
 
 
   out <- lapply(seq_along(p_ic_list), function(ic) {
@@ -168,20 +169,21 @@ run_simulations <- function(ic_list = NULL,
 run_simulations_with_noise <- function(ic_list = NULL,
                             # nfits= 10,
                             n_samples = 100,
-                            sdlog = 0.05,
+                            sdlog = 0.01,
                             cores = 3,
                             pars_opt = pars_opt_0,
                             obs_fun = g,
                             pars = pars_0,
                             pars_perturbed = pars_perturbed_0,
                             fixed = NULL,
-                            alpha = 1) {
+                            alpha = 1,
+                            mixed = FALSE) {
 
 
   p_pert <- p_pert_fun(pars_perturbed = pars_perturbed,
                        pars = pars)
 
-  if(is.null(ic_list)) p_ic_list <- list(P(structure(names(pars), names = names(pars)))) else p_ic_list <- p_ic_list_fun(ic_list)
+  if(is.null(ic_list)) p_ic_list <- list(P(structure(names(pars), names = names(pars)))) else p_ic_list <- p_ic_list_fun(ic_list, mixed = mixed)
 
 
   out <- lapply(seq_along(p_ic_list), function(ic) {
@@ -295,7 +297,8 @@ run_simulations_with_noise <- function(ic_list = NULL,
                 steady_states = steady_states,
                 prediction = prediction,
                 condition = names(p_ic_list)[ic],
-                pars_perturbed = pars_perturbed))
+                pars_perturbed = pars_perturbed,
+                sdlog = sdlog))
   })
 
   names(out) <- names(p_ic_list)

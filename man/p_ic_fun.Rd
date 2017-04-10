@@ -4,7 +4,7 @@
 \alias{p_ic_fun}
 \title{Automatically generaty parameter trafos to quickly test different parameter values as conditions}
 \usage{
-p_ic_fun(ic_list, pars = pars_0)
+p_ic_fun(ic_list, pars = pars_0, mixed = FALSE)
 }
 \arguments{
 \item{ic_list}{Named list of parameter values to be set.}

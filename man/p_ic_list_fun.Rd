@@ -4,7 +4,7 @@
 \alias{p_ic_list_fun}
 \title{Generate a list of parameter trafos.}
 \usage{
-p_ic_list_fun(ic_list, pars = pars_0)
+p_ic_list_fun(ic_list, pars = pars_0, mixed = FALSE)
 }
 \arguments{
 \item{ic_list}{Named list of parameter values to be set.}

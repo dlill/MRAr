@@ -67,9 +67,20 @@ reduce_ic_list <- function(ic_list) {
 #' @export
 #'
 #' @examples
-p_ic_fun <- function(ic_list, pars = pars_0) {
+p_ic_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
 
-  mydf <- expand.grid(ic_list)
+  if(mixed) {
+    mydf <- expand.grid(ic_list)
+  } else {
+    standardvalues <- lapply(ic_list, "[", 1)
+    mydf <- lapply(seq_along(ic_list), function(i) {
+      myic_list <- c(standardvalues[-i], ic_list[i])
+      myic_list <-  myic_list[names(ic_list)]
+      mygrid <- expand.grid(myic_list)
+      if(i>1) mygrid <- mygrid[-1,]
+      return(mygrid)
+        }) %>% do.call(rbind,.)
+  }
 
   p_ic_list <- lapply(1:nrow(mydf), function(i) {
     mytrafo <- structure(names(pars), names = names(pars))
@@ -97,10 +108,21 @@ p_ic_fun <- function(ic_list, pars = pars_0) {
 #' @export
 #'
 #' @examples
-p_ic_list_fun <- function(ic_list, pars = pars_0) {
+p_ic_list_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
 
-  mydf <- expand.grid(ic_list)
-
+  if(mixed) {
+    mydf <- expand.grid(ic_list)
+  } else {
+    standardvalues <- lapply(ic_list, "[", 1)
+    mydf <- lapply(seq_along(ic_list), function(i) {
+      myic_list <- c(standardvalues[-i], ic_list[i])
+      myic_list <-  myic_list[names(ic_list)]
+      mygrid <- expand.grid(myic_list)
+      if(i>1) mygrid <- mygrid[-1,]
+      return(mygrid)
+    }) %>% do.call(rbind,.)
+  }
+  
   p_ic_list <- lapply(1:nrow(mydf), function(i) {
     mytrafo <- structure(names(pars), names = names(pars))
     myics <- mydf[i,] %>% as.character %>% structure(names = names(ic_list))
