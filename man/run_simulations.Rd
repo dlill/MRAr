@@ -6,7 +6,8 @@
 \usage{
 run_simulations(ic_list = NULL, nfits = 10, cores = 3,
   pars_opt = pars_opt_0, obs_fun = g, pars = pars_0,
-  pars_perturbed = pars_perturbed_0, fixed = NULL, alpha = 1)
+  pars_perturbed = pars_perturbed_0, fixed = NULL, alpha = 1,
+  mixed = FALSE)
 }
 \arguments{
 \item{p_ic_list}{}
@@ -21,4 +22,3 @@ pars_0, pars_opt_0
 
 pars_perturbed_0, p_pert
 }
-

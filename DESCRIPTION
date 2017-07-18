@@ -11,5 +11,7 @@ Depends:
     dMod,
     deSolve,
     numDeriv,
-    magrittr
-RoxygenNote: 5.0.1
+    magrittr,
+    xkcd,
+    conveniencefunctions
+RoxygenNote: 6.0.1

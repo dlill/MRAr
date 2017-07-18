@@ -6,18 +6,10 @@
 \usage{
 r_kept_fun(pars_opt = pars_opt_0,
   perturbation_prediction = perturbation_prediction_0, obs_fun = g0,
-  p_fun = p_pert, pars = pars_0, alpha = 1)
+  p_fun = (p_log * p_pert), pars = pars_0, alpha = 9)
 }
 \arguments{
-\item{perturbation_prediction}{}
-
-\item{obs_fun}{}
-
-\item{p_fun}{}
-
 \item{pars}{}
-
-\item{obs_fun_2}{}
 }
 \description{
 This function compares the connection coefficient in the local response matrices
@@ -27,4 +19,3 @@ It takes two observation functions, one with complex being the "standard" cs and
 \details{
 "Standard" in the sense from above: m2+a*cme -> m2 is the standard in this one.
 }
-

@@ -18,4 +18,3 @@ Calculate the local response matrix r from the global responses
 \details{
 
 }
-

@@ -7,14 +7,13 @@
 p_pert_fun(pars_perturbed = pars_perturbed_0, pars = pars_0)
 }
 \arguments{
-\item{pars_perturbed}{A named vector with the fold-changes on the linear scale of the perturbed parameters.}
+\item{pars_perturbed}{A named vector with the changes on the log scale of the perturbed parameters.}
 
 \item{pars}{All parameters of the model.}
 }
 \value{
-A parameter trafo function of class parfn.
+A parameter trafo function of class parfn, which goes from pars_outer (log scale) to pars_outer (log scale)
 }
 \description{
 A parameter transformation function to conveniently generate conditions, in which on parameter was perturbed
 }
-

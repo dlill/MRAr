@@ -42,4 +42,3 @@ i.e. in this case the attibutes "deriv" and "sensitivities" do not coincide.
 Interface to combine an ODE and its sensitivity equations
 into one model function \code{x(times, pars, deriv = TRUE)} returning ODE output and sensitivities.
 }
-

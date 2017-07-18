@@ -10,6 +10,9 @@ p_ic_fun(ic_list, pars = pars_0, mixed = FALSE)
 \item{ic_list}{Named list of parameter values to be set.}
 
 \item{pars}{The original set of parameters to be replaced.}
+
+\item{mixed}{Should all combinations of the pars be gone through (TRUE)
+or should the other pars be set to their first value supplied, when scanning through a certain parameter?}
 }
 \value{
 A "parfn" of all conditions.
@@ -19,4 +22,3 @@ This function can be used, if one wants quickly wants to check the behaviour of 
 The named list ic_list contains all the parameter values that one wants to try out.
 The function then returns a set of parameter transformations p_ic which can be put into g*x*p_ic to have a look at the model prediction.
 }
-

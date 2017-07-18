@@ -22,4 +22,3 @@ ic_list <- c(a=1,b=1:2)
 pars[names(reduce_ic_list(ic_list)[[2]])] <- reduce_ic_list(ic_list)[[2]]
 ic_list <- reduce_ic_list(ic_list)[[1]]
 }
-

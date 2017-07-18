@@ -4,12 +4,15 @@
 \alias{obj_alpha}
 \title{Objective function to minimize certain elements of the local response matrix}
 \usage{
-obj_alpha(pars_opt = pars_opt_0,
+obj_alpha(pars = pars_opt_0, fixed = NULL,
   perturbation_prediction = perturbation_prediction_0, r_kept = r_kept_0,
-  obs_fun = g, p_fun = p_pert, mypars = pars_0, fixed = NULL)
+  obs_fun = g, p_fun = (p_log * p_pert), mypars = pars_0,
+  method = "simple")
 }
 \arguments{
-\item{pars}{}
+\item{p_fun}{}
+
+\item{method}{Method to take numerical derivatives}
 }
 \value{
 The parameter values for which the sign-changing elements are minimal.
@@ -18,4 +21,3 @@ The parameter values for which the sign-changing elements are minimal.
 This function squares all elements that flip sign once the complexes are added to the observation.
 This can then be used to minimize the values.
 }
-

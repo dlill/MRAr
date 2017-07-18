@@ -4,12 +4,11 @@
 \alias{plot_dose_response}
 \title{Plot dose_response curves}
 \usage{
-plot_dose_response(dr)
+plot_dose_response(d_r)
 }
 \arguments{
-\item{dr}{}
+\item{d_r}{}
 }
 \description{
 Plot dose_response curves
 }
-

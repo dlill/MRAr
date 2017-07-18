@@ -4,7 +4,7 @@
 \alias{dose_response_fun}
 \title{Compute dose-response curves}
 \usage{
-dose_response_fun(which_par, dosages, pars = pars_0, predfun = (g * xs))
+dose_response_fun(which_par, dosages, pars = pars_0, predfun = (xs * p_log))
 }
 \arguments{
 \item{which_par}{Character of length 1: Which par to perturb}
@@ -17,4 +17,3 @@ dose_response_fun(which_par, dosages, pars = pars_0, predfun = (g * xs))
 Compute the steady state dose-response of a parameter.
 Put the dose response out in a tidy data format.
 }
-

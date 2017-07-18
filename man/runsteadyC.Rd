@@ -26,4 +26,3 @@ Interface to runsteady()
 \details{
 See deSolve-package for a full description of possible arguments
 }
-

@@ -6,7 +6,7 @@
 \usage{
 R_fun(pars_opt = pars_opt_0,
   perturbation_prediction = perturbation_prediction_0, obs_fun = g,
-  p_fun = p_pert, pars = pars_0)
+  p_fun = (p_log * p_pert), pars = pars_0)
 }
 \arguments{
 \item{pars}{}
@@ -14,4 +14,3 @@ R_fun(pars_opt = pars_opt_0,
 \description{
 Compute R from fractional changes of steady states
 }
-

@@ -3,10 +3,10 @@
 #'
 #' A parameter transformation function to conveniently generate conditions, in which on parameter was perturbed
 #'
-#' @param pars_perturbed A named vector with the fold-changes on the linear scale of the perturbed parameters.
+#' @param pars_perturbed A named vector with the changes on the log scale of the perturbed parameters.
 #' @param pars All parameters of the model.
 #'
-#' @return A parameter trafo function of class parfn.
+#' @return A parameter trafo function of class parfn, which goes from pars_outer (log scale) to pars_outer (log scale)
 #' @export
 #'
 #' @examples
@@ -14,14 +14,20 @@ p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
                        pars = pars_0) {
 
 
-  p_control <- P(structure(names(pars), names = names(pars)), condition = "Ctr")
+  p_control <- P(structure(names(pars), names = names(pars)),
+                 condition = "Ctr",
+                 compile = T,
+                 modelname = "p_ctr")
 
   p_pert_list <- lapply(seq_along(pars_perturbed), function(i) {
     mytrafo <- structure(names(pars), names = names(pars))
 
-    mytrafo[names(pars_perturbed)[i]] <- paste0(names(pars_perturbed)[i], "*", pars_perturbed[i])
+    mytrafo[names(pars_perturbed)[i]] <- paste0(names(pars_perturbed)[i], " + 1 * (", pars_perturbed[i], ")")
 
-    p <- P(mytrafo, condition = paste0(names(pars_perturbed)[i], "*", pars_perturbed[i]))
+    p <- P(mytrafo,
+           condition = paste0(names(pars_perturbed)[i], " + ", round(pars_perturbed[i],1)),
+           compile = T,
+           modelname = paste0("p_pert",i))
   })
 
   p_pert <- NULL
@@ -62,12 +68,15 @@ reduce_ic_list <- function(ic_list) {
 #'
 #' @param ic_list Named list of parameter values to be set.
 #' @param pars The original set of parameters to be replaced.
+#' @param mixed Should all combinations of the pars be gone through (TRUE)
+#' or should the other pars be set to their first value supplied, when scanning through a certain parameter?
 #'
 #' @return A "parfn" of all conditions.
 #' @export
 #'
 #' @examples
 p_ic_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
+
 
   if(mixed) {
     mydf <- expand.grid(ic_list)
@@ -86,7 +95,10 @@ p_ic_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
     mytrafo <- structure(names(pars), names = names(pars))
     myics <- mydf[i,] %>% as.character %>% structure(names = names(ic_list))
     mytrafo[names(myics)] <- myics
-    p <- P(mytrafo, condition = paste0(names(myics), "=", myics, collapse = "_"))
+    p <- P(mytrafo,
+           condition = paste0(names(myics), "=", myics, collapse = "_"),
+           compile = T,
+           modelname = paste0("p_", sample(c(letters,0:9))))
   })
 
   p_ic <- NULL
@@ -103,6 +115,8 @@ p_ic_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
 #'
 #' @param ic_list Named list of parameter values to be set.
 #' @param pars The original set of parameters to be replaced.
+#' @param mixed Should all combinations of the pars be gone through (TRUE)
+#' or should the other pars be set to their first value supplied, when scanning through a certain parameter?
 #'
 #' @return
 #' @export
@@ -122,7 +136,7 @@ p_ic_list_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
       return(mygrid)
     }) %>% do.call(rbind,.)
   }
-  
+
   p_ic_list <- lapply(1:nrow(mydf), function(i) {
     mytrafo <- structure(names(pars), names = names(pars))
     myics <- mydf[i,] %>% as.character %>% structure(names = names(ic_list))
@@ -134,4 +148,33 @@ p_ic_list_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
   }) %>% do.call(c,.)
 
   return(p_ic_list)
+}
+
+
+#' Generate a log-trafo
+#'
+#' Just a convenience-function to quickly generate a log-trafo.
+#'
+#' @param parameters
+#' @param condition
+#' @param attach.input
+#' @param keep.root
+#' @param compile
+#' @param modelname
+#' @param method
+#' @param verbose
+#'
+#' @return
+#' @export
+#'
+#' @examples
+P_log <- function(parameters = NULL, condition = NULL,
+                  attach.input = FALSE, keep.root = TRUE, compile = FALSE,
+                  modelname = NULL, method = c("explicit", "implicit"), verbose = FALSE) {
+
+  trafo <- paste0("exp(log(", parameters, "))") %>% set_names(parameters)
+  return(P(trafo, parameters = NULL, condition = NULL,
+           attach.input = FALSE, keep.root = TRUE, compile = FALSE,
+           modelname = NULL, method = c("explicit", "implicit"), verbose = FALSE)
+  )
 }
