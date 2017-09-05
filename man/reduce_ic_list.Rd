@@ -2,12 +2,12 @@
 % Please edit documentation in R/condition_generation.R
 \name{reduce_ic_list}
 \alias{reduce_ic_list}
-\title{Reduce ic_list to include only pars with more than one value}
+\title{Reduce list of initial conditions to include only pars with more than one value}
 \usage{
 reduce_ic_list(ic_list)
 }
 \arguments{
-\item{ic_list}{}
+\item{ic_list}{list of initial conditions}
 }
 \value{
 list(ic_list, modified pars)

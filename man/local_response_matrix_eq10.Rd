@@ -7,7 +7,7 @@
 local_response_matrix_eq10(R)
 }
 \arguments{
-\item{R}{The matrix of global responses}
+\item{R}{The (square) matrix of global responses, in which column j means that module j only was perturbed}
 }
 \value{
 r The local response matrix, with the attribute which_pars_perturbed

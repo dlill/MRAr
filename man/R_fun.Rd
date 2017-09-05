@@ -9,7 +9,15 @@ R_fun(pars_opt = pars_opt_0,
   p_fun = (p_log * p_pert), pars = pars_0)
 }
 \arguments{
-\item{pars}{}
+\item{pars_opt}{Free parameters a_ij to control the influence of the complexes}
+
+\item{perturbation_prediction}{Simulated steady state perturbation data}
+
+\item{obs_fun}{Observation function which returns the communicating species}
+
+\item{p_fun}{Parameter transformation which returns different conditions}
+
+\item{pars}{Parameters of the ODE model}
 }
 \description{
 Compute R from fractional changes of steady states

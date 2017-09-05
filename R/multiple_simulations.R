@@ -1,4 +1,4 @@
-#' Run the optimization procedure at many conditions
+#' Run the optimization procedure at many conditions (old, not used for results presented in the paper)
 #'
 #' Even though this function takes only one parameter as input, it depends on many objects to be defined.
 #'
@@ -292,7 +292,7 @@ run_simulations_with_noise <- function(ic_list = NULL,
       }
 
       # r_0 before optimization
-      r_0 <- R_fun(pars_opt = structure(rep(0, length(pars_opt)), names = names(pars_opt)),
+      r_0 <- R_fun(pars_opt = structure(rep(-36, length(pars_opt)), names = names(pars_opt)),
                    perturbation_prediction = perturbation_prediction,
                    obs_fun = obs_fun,
                    p_fun = p_fun,

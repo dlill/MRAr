@@ -12,5 +12,6 @@ obj_alpha_no_derivs(pars_opt = pars_opt_0,
 \item{mypars}{}
 }
 \description{
-Objective function which doesn't compute derivatives
+I used this function to compare different optimizers. trust() was as fast as optim, but more reliable.
+All other methods like simulated annealing were not as reliable.
 }

@@ -6,16 +6,26 @@
 \usage{
 r_kept_fun(pars_opt = pars_opt_0,
   perturbation_prediction = perturbation_prediction_0, obs_fun = g0,
-  p_fun = (p_log * p_pert), pars = pars_0, alpha = 9)
+  p_fun = (p_log * p_pert), pars = pars_0, alpha = -log(0 +
+  .Machine$double.eps))
 }
 \arguments{
-\item{pars}{}
+\item{pars_opt}{Free parameters a_ij to control the influence of the complexes}
+
+\item{perturbation_prediction}{Simulated steady state perturbation data}
+
+\item{obs_fun}{Observation function which returns the communicating species}
+
+\item{p_fun}{Parameter transformation which returns different conditions}
+
+\item{pars}{Parameters of the ODE model}
+
+\item{alpha}{Compares r(pars_opt) with r(pars_opt + alpha).
+Since pars_opt_0 defaults to log(0+.Machine$double.eps), I chose its negative value as the default.
+This is basically the same as comparing r(0) with r(1)}
 }
 \description{
-This function compares the connection coefficient in the local response matrices
-when either active forms or complexes are used as a communicating species.
-It takes two observation functions, one with complex being the "standard" cs and one with the free form bein the standard cs.
-}
-\details{
-"Standard" in the sense from above: m2+a*cme -> m2 is the standard in this one.
+This function compares the connection coefficient in the local response matrices when either only free
+active kinases are measured or when the complexes are switched on.
+All free parameters a_ij are increased simultaneously
 }

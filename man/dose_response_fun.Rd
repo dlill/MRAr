@@ -11,9 +11,11 @@ dose_response_fun(which_par, dosages, pars = pars_0, predfun = (xs * p_log))
 
 \item{dosages}{Numeric including the dosages eq(1,50,by = 1)}
 
-\item{predfun}{}
+\item{pars}{dynamical parameters}
+
+\item{predfun}{prediction function, can be concatenated with parameter trafos and observation functions}
 }
 \description{
-Compute the steady state dose-response of a parameter.
-Put the dose response out in a tidy data format.
+Compute the steady state dose-response wrt a parameter.
+Return the dose response in a tidy data format.
 }

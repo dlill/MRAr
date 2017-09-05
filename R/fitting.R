@@ -3,16 +3,18 @@
 #' This function squares all elements that flip sign once the complexes are added to the observation.
 #' This can then be used to minimize the values.
 #'
-#' @param pars_opt
-#' @param perturbation_prediction
-#' @param r_kept
-#' @param obs_fun
-#' @param mypars
-#' @param fixed
-#' @param method Method to take numerical derivatives
-#' @param p_fun
 #'
-#' @return The parameter values for which the sign-changing elements are minimal.
+#' @param pars Free parameters a_ij to control the influence of the complexes
+#' @param fixed Fixed parameters are parameters for which no derivative is calculated
+#' @param perturbation_prediction Simulated steady state perturbation data
+#' @param r_kept elements kept in the minimization (=elements that describe sequestration connections)
+#' @param obs_fun Observation function which returns the communicating species
+#' @param p_fun Parameter transformation which returns different conditions
+#' @param mypars Parameters of the ODE model
+#' @param method method for taking the derivative wrt pars_opt.
+#'
+#'
+#' @return
 #' @export
 #'
 #' @examples
@@ -57,6 +59,9 @@ obj_alpha <- function(pars = pars_opt_0,
 
 
 #' Objective function which doesn't compute derivatives
+#'
+#' I used this function to compare different optimizers. trust() was as fast as optim, but more reliable.
+#' All other methods like simulated annealing were not as reliable.
 #'
 #' @param pars_opt
 #' @param perturbation_prediction

@@ -1,6 +1,6 @@
 #' Calculate the local response matrix r from the global responses
 #'
-#' @param R The matrix of global responses
+#' @param R The (square) matrix of global responses, in which column j means that module j only was perturbed
 #'
 #' @details
 #'
@@ -12,8 +12,8 @@ local_response_matrix_eq10 <- function(R) {
 
   R_svd <- svd(R)
 
-  condition_number <- R_svd$d[1]/R_svd$d[length(R_svd$d)]
-  if(abs(condition_number) > 1e12) warning("R is ill conditioned. Condition number is ", condition_number)
+  condition_number <- R_svd$d[length(R_svd$d)]/R_svd$d[1]
+  if(abs(condition_number) < .Machine$double.eps) warning("R is ill conditioned. Condition number is ", condition_number)
 
   R_inv <- R_svd$v %*% diag(1/R_svd$d) %*% t(R_svd$u)
 
@@ -27,11 +27,11 @@ local_response_matrix_eq10 <- function(R) {
 
 #' Compute R from fractional changes of steady states
 #'
-#' @param pars_opt
-#' @param perturbation_prediction
-#' @param obs_fun
-#' @param p_fun
-#' @param pars
+#' @param pars_opt Free parameters a_ij to control the influence of the complexes
+#' @param perturbation_prediction Simulated steady state perturbation data
+#' @param obs_fun Observation function which returns the communicating species
+#' @param p_fun Parameter transformation which returns different conditions
+#' @param pars Parameters of the ODE model
 #'
 #' @return
 #' @export
@@ -45,20 +45,13 @@ R_fun <- function(pars_opt = pars_opt_0,
   mypars <- pars
   mypars[names(pars_opt)] <- pars_opt
   mypars <- p_fun(mypars, deriv = F)
-  # Apply the observation function to add the states
-  # envir <- environment()
-  # print(eval(perturbation_prediction, envir = envir))
-  # print(eval(pars_opt, envir = envir))
+
   my_perturbation_prediction <- lapply(1:length(perturbation_prediction),
                                        function(i) obs_fun(out = perturbation_prediction[[i]],
                                                            pars = mypars[[i]],
                                                            deriv = F)) %>% do.call(c,.)
   names(my_perturbation_prediction) <- attr(p_fun, "conditions")
 
-  # print(lapply(1:length(perturbation_prediction),
-  #              function(i) obs_fun(out = perturbation_prediction[[i]],
-  #                                  pars = mypars[[i]],
-  #                                  deriv = F)) %>% do.call(c,.))
 
 
   # R
@@ -73,19 +66,18 @@ R_fun <- function(pars_opt = pars_opt_0,
 
 #' Which elements to keep in the optimization procedure?
 #'
-#' This function compares the connection coefficient in the local response matrices
-#' when either active forms or complexes are used as a communicating species.
-#' It takes two observation functions, one with complex being the "standard" cs and one with the free form bein the standard cs.
+#' This function compares the connection coefficient in the local response matrices when either only free
+#' active kinases are measured or when the complexes are switched on.
+#' All free parameters a_ij are increased simultaneously
 #'
-#' "Standard" in the sense from above: m2+a*cme -> m2 is the standard in this one.
-#'
-#'
-#' @param pars_opt
-#' @param perturbation_prediction
-#' @param obs_fun
-#' @param obs_fun_2
-#' @param p_fun
-#' @param pars
+#' @param pars_opt Free parameters a_ij to control the influence of the complexes
+#' @param perturbation_prediction Simulated steady state perturbation data
+#' @param obs_fun Observation function which returns the communicating species
+#' @param p_fun Parameter transformation which returns different conditions
+#' @param pars Parameters of the ODE model
+#' @param alpha Compares r(pars_opt) with r(pars_opt + alpha).
+#' Since pars_opt_0 defaults to log(0+.Machine$double.eps), I chose its negative value as the default.
+#' This is basically the same as comparing r(0) with r(1)
 #'
 #' @return
 #' @export
@@ -96,7 +88,7 @@ r_kept_fun <-function(pars_opt = pars_opt_0,
                       obs_fun = g0,
                       p_fun = (p_log*p_pert),
                       pars = pars_0,
-                      alpha = 9) {
+                      alpha = -log(0+.Machine$double.eps)) {
 
   r_0 <- R_fun(pars_opt = pars_opt,
                perturbation_prediction = perturbation_prediction,
@@ -120,13 +112,13 @@ r_kept_fun <-function(pars_opt = pars_opt_0,
 }
 
 
-#' Just a convenience function for r(alpha)
+#' Parametric local response matrix
 #'
-#' @param pars_opt
-#' @param perturbation_prediction
-#' @param obs_fun
-#' @param p_fun
-#' @param pars
+#' @param pars_opt Free parameters a_ij to control the influence of the complexes
+#' @param perturbation_prediction Simulated steady state perturbation data
+#' @param obs_fun Observation function which returns the communicating species
+#' @param p_fun Parameter transformation which returns different conditions
+#' @param pars Parameters of the ODE model
 #'
 #' @return
 #' @export
@@ -147,7 +139,8 @@ r_alpha_fun <- function(pars_opt = pars_opt_0,
 
 
 
-#' r_kept fun for supplying two r-matrices
+#' Function to compare two local response matrices
+#' in order to choose which elements to keep in the minimization process
 #'
 #' @param r_0
 #' @param r_alpha
@@ -168,13 +161,14 @@ r_kept_fun2 <-function(r_0, r_alpha) {
 }
 
 
-#' Compute R from fractional changes of steady states, but do the linear combination only after the derivatives have been taken
+#' Compute R from fractional changes of steady states,
+#' but do the linear combination only after the derivatives have been taken
 #'
-#' @param pars_opt
-#' @param perturbation_prediction
-#' @param obs_fun
-#' @param p_fun
-#' @param pars
+#' @param pars_opt Free parameters a_ij to control the influence of the complexes
+#' @param perturbation_prediction Simulated steady state perturbation data
+#' @param obs_fun Observation function which returns the communicating species
+#' @param p_fun Parameter transformation which returns different conditions
+#' @param pars Parameters of the ODE model
 #'
 #' @return
 #' @export

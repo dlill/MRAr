@@ -2,15 +2,25 @@
 % Please edit documentation in R/response_matrices.R
 \name{R_fun_2}
 \alias{R_fun_2}
-\title{Compute R from fractional changes of steady states, but do the linear combination only after the derivatives have been taken}
+\title{Compute R from fractional changes of steady states,
+but do the linear combination only after the derivatives have been taken}
 \usage{
 R_fun_2(pars_opt = pars_opt_0,
   perturbation_prediction = perturbation_prediction_0, obs_fun = g,
   p_fun = (p_pert), pars = pars_0)
 }
 \arguments{
-\item{pars}{}
+\item{pars_opt}{Free parameters a_ij to control the influence of the complexes}
+
+\item{perturbation_prediction}{Simulated steady state perturbation data}
+
+\item{obs_fun}{Observation function which returns the communicating species}
+
+\item{p_fun}{Parameter transformation which returns different conditions}
+
+\item{pars}{Parameters of the ODE model}
 }
 \description{
-Compute R from fractional changes of steady states, but do the linear combination only after the derivatives have been taken
+Compute R from fractional changes of steady states,
+but do the linear combination only after the derivatives have been taken
 }

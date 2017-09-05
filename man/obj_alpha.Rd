@@ -10,12 +10,21 @@ obj_alpha(pars = pars_opt_0, fixed = NULL,
   method = "simple")
 }
 \arguments{
-\item{p_fun}{}
+\item{pars}{Free parameters a_ij to control the influence of the complexes}
 
-\item{method}{Method to take numerical derivatives}
-}
-\value{
-The parameter values for which the sign-changing elements are minimal.
+\item{fixed}{Fixed parameters are parameters for which no derivative is calculated}
+
+\item{perturbation_prediction}{Simulated steady state perturbation data}
+
+\item{r_kept}{elements kept in the minimization (=elements that describe sequestration connections)}
+
+\item{obs_fun}{Observation function which returns the communicating species}
+
+\item{p_fun}{Parameter transformation which returns different conditions}
+
+\item{mypars}{Parameters of the ODE model}
+
+\item{method}{method for taking the derivative wrt pars_opt.}
 }
 \description{
 This function squares all elements that flip sign once the complexes are added to the observation.

@@ -3,15 +3,15 @@ Type: Package
 Title: Functions to do MRA with
 Version: 0.1.0
 Authors@R: person("Daniel", "Lill", email = "daniel.lill@physik.uni-freiburg.de", role = c("aut", "cre"))
-Description: This is a personal package to do some simulations on Modular Response Analysis.
+Description: This is a collection of functions to do simulations with Modular Response Analysis.
   It highly depends on dMod.
 License: What license is it under?
 LazyData: TRUE
 Depends:
-    dMod,
+    rootSolve,
     deSolve,
+    dMod,
     numDeriv,
-    magrittr,
-    xkcd,
-    conveniencefunctions
+    tidyverse,    
+    magrittr
 RoxygenNote: 6.0.1

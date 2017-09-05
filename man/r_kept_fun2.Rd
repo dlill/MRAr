@@ -2,7 +2,8 @@
 % Please edit documentation in R/response_matrices.R
 \name{r_kept_fun2}
 \alias{r_kept_fun2}
-\title{r_kept fun for supplying two r-matrices}
+\title{Function to compare two local response matrices
+in order to choose which elements to keep in the minimization process}
 \usage{
 r_kept_fun2(r_0, r_alpha)
 }
@@ -10,5 +11,6 @@ r_kept_fun2(r_0, r_alpha)
 \item{r_alpha}{}
 }
 \description{
-r_kept fun for supplying two r-matrices
+Function to compare two local response matrices
+in order to choose which elements to keep in the minimization process
 }

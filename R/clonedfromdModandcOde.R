@@ -1,3 +1,5 @@
+# Some adaptions of dMod and cOde functions for steady states
+
 #' Alternative version of expand.grid
 #' @param seq1 Vector, numeric or character
 #' @param seq2 Vector, numeric or character
@@ -235,3 +237,34 @@ Xs_steady <- function(odemodel, forcings=NULL, events=NULL, names = NULL, condit
 
 
 }
+
+
+#' Augmentation of getDerivs to subset wrt to which_states.which_pars
+#'
+#' @param prediction a prdframe which contains derivatives as an attribute
+#' @param which_states which states shall be taken the derivative of ...
+#' @param which_pars ... and with regard to which pars?
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_derivs <- function(prediction, which_states = NULL, which_pars = NULL) {
+  prediction %>%
+    getDerivs() %>%
+    lapply(function(i) {
+      mynames <-  colnames(i)
+      state_columns <- par_columns <- rep(T, length(mynames))
+      if(!is.null(which_states)) {
+        state_columns <- sapply(which_states, function(ws) {str_detect(mynames, paste0("^", ws, "\\."))}) %>% matrix(ncol = length(which_states)) %>% apply(1, any)
+      }
+      if(!is.null(which_pars)) {
+        par_columns <- sapply(which_pars, function(wp) str_detect(mynames, paste0("\\.", wp, "$"))) %>% matrix(ncol = length(which_pars)) %>% apply(1, any)
+      }
+
+      cols <- state_columns & par_columns
+      cols[1] <- TRUE
+      return(i[,cols])
+    })
+}
+

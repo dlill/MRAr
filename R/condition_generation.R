@@ -1,4 +1,3 @@
-
 #' Convenient simulation of perturbation experiments
 #'
 #' A parameter transformation function to conveniently generate conditions, in which on parameter was perturbed
@@ -38,29 +37,9 @@ p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
 }
 
 
-#' Reduce ic_list to include only pars with more than one value
-#'
-#' This can be used to clean the output, such that the condition description is not as long anymore.
-#'
-#' @param ic_list
-#'
-#' @return list(ic_list, modified pars)
-#' @export
-#'
-#' @examples
-#'
-#' pars <- c(a=5,b=1)
-#' ic_list <- c(a=1,b=1:2)
-#' pars[names(reduce_ic_list(ic_list)[[2]])] <- reduce_ic_list(ic_list)[[2]]
-#' ic_list <- reduce_ic_list(ic_list)[[1]]
-reduce_ic_list <- function(ic_list) {
-  lengths <- sapply(ic_list, length)
-  myic_list <- ic_list[lengths != 1]
-  mypars <- ic_list[lengths == 1] %>% unlist
-  return(list(myic_list,mypars))
-}
 
-#' Automatically generaty parameter trafos to quickly test different parameter values as conditions
+
+#' Automatically generate parameter trafos to quickly test different parameter values as conditions
 #'
 #' This function can be used, if one wants quickly wants to check the behaviour of the model with different parameters.
 #' The named list ic_list contains all the parameter values that one wants to try out.
@@ -107,6 +86,28 @@ p_ic_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
   return(p_ic)
 }
 
+#' Reduce list of initial conditions to include only pars with more than one value
+#'
+#' This can be used to clean the output, such that the condition description is not as long anymore.
+#'
+#' @param ic_list list of initial conditions
+#'
+#' @return list(ic_list, modified pars)
+#' @export
+#'
+#' @examples
+#'
+#' pars <- c(a=5,b=1)
+#' ic_list <- c(a=1,b=1:2)
+#' pars[names(reduce_ic_list(ic_list)[[2]])] <- reduce_ic_list(ic_list)[[2]]
+#' ic_list <- reduce_ic_list(ic_list)[[1]]
+reduce_ic_list <- function(ic_list) {
+  lengths <- sapply(ic_list, length)
+  myic_list <- ic_list[lengths != 1]
+  mypars <- ic_list[lengths == 1] %>% unlist
+  return(list(myic_list,mypars))
+}
+
 #' Generate a list of parameter trafos.
 #'
 #' This function is similar to p_ic_fun, but it returns a list of parfns.
@@ -150,31 +151,3 @@ p_ic_list_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
   return(p_ic_list)
 }
 
-
-#' Generate a log-trafo
-#'
-#' Just a convenience-function to quickly generate a log-trafo.
-#'
-#' @param parameters
-#' @param condition
-#' @param attach.input
-#' @param keep.root
-#' @param compile
-#' @param modelname
-#' @param method
-#' @param verbose
-#'
-#' @return
-#' @export
-#'
-#' @examples
-P_log <- function(parameters = NULL, condition = NULL,
-                  attach.input = FALSE, keep.root = TRUE, compile = FALSE,
-                  modelname = NULL, method = c("explicit", "implicit"), verbose = FALSE) {
-
-  trafo <- paste0("exp(log(", parameters, "))") %>% set_names(parameters)
-  return(P(trafo, parameters = NULL, condition = NULL,
-           attach.input = FALSE, keep.root = TRUE, compile = FALSE,
-           modelname = NULL, method = c("explicit", "implicit"), verbose = FALSE)
-  )
-}
