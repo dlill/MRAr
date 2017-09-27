@@ -64,6 +64,25 @@ R_fun <- function(pars_opt = pars_opt_0,
 }
 
 
+
+#' Find elements Aij and Aji which are both non-zero
+#'
+#' @param mat a square matrix
+#'
+#' @return
+#' @export
+#'
+#' @examples
+find_symmetric_elements_both_nonzero <- function(mat, threshold = 0.001) {
+  myupper <- mat[upper.tri(mat)]
+  mylower <- t(mat)[upper.tri(mat)]
+
+  out <- matrix(FALSE, nrow = nrow(mat), ncol = ncol(mat))
+  out[upper.tri(out)] <- (abs(myupper) > threshold & abs(mylower) > threshold)
+  out <- out + t(out)
+  return(out)
+}
+
 #' Which elements to keep in the optimization procedure?
 #'
 #' This function compares the connection coefficient in the local response matrices when either only free
@@ -83,12 +102,12 @@ R_fun <- function(pars_opt = pars_opt_0,
 #' @export
 #'
 #' @examples
-r_kept_fun <-function(pars_opt = pars_opt_0,
-                      perturbation_prediction = perturbation_prediction_0,
-                      obs_fun = g0,
-                      p_fun = (p_log*p_pert),
-                      pars = pars_0,
-                      alpha = -log(0+.Machine$double.eps)) {
+r_kept_fun <- function(pars_opt = pars_opt_0,
+                       perturbation_prediction = perturbation_prediction_0,
+                       obs_fun = g0,
+                       p_fun = (p_log*p_pert),
+                       pars = pars_0,
+                       alpha = -log(0+.Machine$double.eps)) {
 
   r_0 <- R_fun(pars_opt = pars_opt,
                perturbation_prediction = perturbation_prediction,
@@ -103,11 +122,41 @@ r_kept_fun <-function(pars_opt = pars_opt_0,
                pars = pars) %>% local_response_matrix_eq10()
 
   # Which elements are kept in the optimization process?
-  signs <- (sign(r_0) - sign(r_1)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
-  abs_vals <- (abs(r_0) < 1e-3)
 
-  keep <- (abs_vals | signs)
+  # sign switch
+  sign_flips <- (sign(r_0) - sign(r_1)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
 
+  # small elements
+  # smalls <- abs(r_0) < 1e-3
+
+  # corresponding symmetric element is non-zero
+  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0)
+
+  keep <- (sign_flips & symmetric_elements) #| smalls
+
+  return(keep)
+}
+
+
+#' Function to compare two local response matrices
+#' in order to choose which elements to keep in the minimization process
+#'
+#' @param r_0
+#' @param r_alpha
+#'
+#' @return
+#' @export
+#'
+#' @examples
+r_kept_fun2 <-function(r_0, r_alpha) {
+
+  # Which elements are kept in the optimization process?
+  sign_flips <- (sign(r_0) - sign(r_alpha)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
+
+  # corresponding symmetric element is non-zero
+  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0)
+
+  keep <- (sign_flips & symmetric_elements)
   return(keep)
 }
 
@@ -139,26 +188,7 @@ r_alpha_fun <- function(pars_opt = pars_opt_0,
 
 
 
-#' Function to compare two local response matrices
-#' in order to choose which elements to keep in the minimization process
-#'
-#' @param r_0
-#' @param r_alpha
-#'
-#' @return
-#' @export
-#'
-#' @examples
-r_kept_fun2 <-function(r_0, r_alpha) {
 
-  # Which elements are kept in the optimization process?
-  signs <- (sign(r_0) - sign(r_alpha)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
-  abs_vals <- (abs(r_0) < 1e-3)
-
-  keep <- (abs_vals | signs)
-
-  return(keep)
-}
 
 
 #' Compute R from fractional changes of steady states,
