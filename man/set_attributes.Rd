@@ -4,7 +4,7 @@
 \alias{set_attributes}
 \title{magrittr-Style set attributes}
 \usage{
-set_attributes(x, attribute, value)
+set_attributes(., attribute, value)
 }
 \arguments{
 \item{expr}{}

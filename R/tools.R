@@ -68,34 +68,22 @@ is_in_between <- function(x, lower_lim, upper_lim) {
 }
 
 
-#' magrittr-Style Apply an expression that's more complicated
-#'
-#' @param x
-#' @param expr
-#'
-#' @return
-#' @export
-#'
-#' @examples
-apply_expression <- function(x, ...) {
-  myenv <- environment()
-  eval(as.expression(substitute(...)), envir = myenv)
-}
+
 
 #' magrittr-Style set attributes
 #'
-#' @param x
+#' @param .
 #' @param expr
 #'
 #' @return
 #' @export
 #'
 #' @examples
-set_attributes <- function(x, attribute, value) {
+set_attributes <- function(., attribute, value) {
   for(i in 1:length(attribute)) {
-    attr(x, attribute[i]) <- value[i]
+    attr(., attribute[i]) <- value[i]
   }
-  return(x)
+  return(.)
 }
 
 

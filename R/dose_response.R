@@ -107,7 +107,8 @@ r_opt_dose_response <- function(which_par,
                                 pars_opt = pars_opt_0,
                                 obs_fun = g,
                                 p_fun = (p_log * p_pert),
-                                pars = pars_0) {
+                                pars = pars_0,
+                                pars_opt_default_value = 0) {
 
 
   r_names_0 <- paste0("r", outer(as.character(1:length(modules0)),as.character(1:length(modules0)), paste0))
@@ -193,10 +194,14 @@ r_opt_dose_response <- function(which_par,
           is_greater_than(0.5) %>%
           matrix(nrow = length(modules0))
 
+        pars_opt[!which_pars_opt(pars_opt,r_kept,modules)] <- pars_opt_default_value
+        pars[names(pars_opt)] <- pars_opt
+
+
         assign("obj", obj_alpha, envir = .GlobalEnv)
 
         myfits <- mstrust(obj,
-                          center =  structure(rep(-1, length(pars_opt)), names = names(pars_opt)), # center around log(pars_opt) = -1
+                          center =  structure(rep(-1, sum(which_pars_opt(pars_opt,r_kept,modules))), names = names(pars_opt[which_pars_opt(pars_opt,r_kept,modules)])), # center around log(pars_opt) = -1
                           studyname = "pars_controlled",
                           resultPath = ".pars_controlled/",
                           cores = 3,
@@ -226,6 +231,7 @@ r_opt_dose_response <- function(which_par,
 
           # save r_opt and bestfit outside of this environment
           r_opt_prev <<- r_opt
+          mybest_fit <- c(mybest_fit, pars_opt[!which_pars_opt(pars_opt,r_kept,modules)])[names(pars_opt)]
           best_fit_prev <<- mybest_fit
         }
       } else {
@@ -233,6 +239,8 @@ r_opt_dose_response <- function(which_par,
         mybest_fit <- best_fit_prev
         # print(i)
       }
+
+
 
       r_opt <- c(r_opt, mybest_fit) %>% set_names(c(r_names_0, names(pars_opt)))
 

@@ -5,7 +5,7 @@
 \title{Function to compare two local response matrices
 in order to choose which elements to keep in the minimization process}
 \usage{
-r_kept_fun2(r_0, r_alpha)
+r_kept_fun2(r_0, r_alpha, threshold = 0.01)
 }
 \arguments{
 \item{r_alpha}{}

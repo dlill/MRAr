@@ -73,7 +73,7 @@ R_fun <- function(pars_opt = pars_opt_0,
 #' @export
 #'
 #' @examples
-find_symmetric_elements_both_nonzero <- function(mat, threshold = 0.001) {
+find_symmetric_elements_both_nonzero <- function(mat, threshold = 0.01) {
   myupper <- mat[upper.tri(mat)]
   mylower <- t(mat)[upper.tri(mat)]
 
@@ -107,7 +107,8 @@ r_kept_fun <- function(pars_opt = pars_opt_0,
                        obs_fun = g0,
                        p_fun = (p_log*p_pert),
                        pars = pars_0,
-                       alpha = -log(0+.Machine$double.eps)) {
+                       alpha = -log(0+.Machine$double.eps),
+                       threshold = 0.01) {
 
   r_0 <- R_fun(pars_opt = pars_opt,
                perturbation_prediction = perturbation_prediction,
@@ -130,7 +131,7 @@ r_kept_fun <- function(pars_opt = pars_opt_0,
   # smalls <- abs(r_0) < 1e-3
 
   # corresponding symmetric element is non-zero
-  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0)
+  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0, threshold = threshold)
 
   keep <- (sign_flips & symmetric_elements) #| smalls
 
@@ -148,13 +149,13 @@ r_kept_fun <- function(pars_opt = pars_opt_0,
 #' @export
 #'
 #' @examples
-r_kept_fun2 <-function(r_0, r_alpha) {
+r_kept_fun2 <-function(r_0, r_alpha, threshold = 0.01) {
 
   # Which elements are kept in the optimization process?
   sign_flips <- (sign(r_0) - sign(r_alpha)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
 
   # corresponding symmetric element is non-zero
-  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0)
+  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0, threshold = threshold)
 
   keep <- (sign_flips & symmetric_elements)
   return(keep)
