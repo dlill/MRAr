@@ -24,7 +24,7 @@ p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
     mytrafo[names(pars_perturbed)[i]] <- paste0(names(pars_perturbed)[i], " + 1 * (", pars_perturbed[i], ")")
 
     p <- P(mytrafo,
-           condition = paste0(names(pars_perturbed)[i], " + ", round(pars_perturbed[i],1)),
+           condition = paste0(names(pars_perturbed)[i], " ", round(pars_perturbed[i],1)),
            compile = T,
            modelname = paste0("p_pert",i))
   })
