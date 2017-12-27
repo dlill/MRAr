@@ -28,10 +28,10 @@ runsteadyC <- function(y, times=c(0,Inf), func, parms, ...)
   y <- y[attr(func, "variables")]
   parms <- parms[attr(func, "parameters")]
   parms <- c(parms, rep(0, length(y)))
-  arglist <- list(y = y, times = times.inner, func = "derivs",
-                  parms = parms, dllname = func, initfunc = "initmod")
+  arglist <- list(y = y, times = times.inner, func = paste0(func, "_derivs"),
+                  parms = parms, dllname = func, initfunc = paste0(func, "_initmod"))
   if (attr(func, "jacobian") == "full")
-    arglist <- c(arglist, list(jacfunc = "jacobian"))
+    arglist <- c(arglist, list(jacfunc = paste0(func, "_jacobian")))
   if (attr(func, "jacobian") == "inz.lsodes") {
     inz <- attr(func, "inz")
     lrw <- 20 + 3 * dim(inz)[1] + 20 * length(y)
@@ -41,13 +41,13 @@ runsteadyC <- function(y, times=c(0,Inf), func, parms, ...)
   if (attr(func, "jacobian") == "jacvec.lsodes") {
     inz <- attr(func, "inz")
     arglist <- c(arglist, list(sparsetype = "sparseusr",
-                               jacvec = "jacvec", inz = inz))
+                               jacvec = paste0(func, "_jacvec"), inz = inz))
   }
   if (!is.null(attr(func, "forcings")) & attr(func, "fcontrol") ==
       "nospline")
-    arglist <- c(arglist, list(initforc = "initforc"))
+    arglist <- c(arglist, list(initforc = paste0(func, "_initforc")))
   if (!is.null(attr(func, "rootfunc")))
-    arglist <- c(arglist, list(rootfunc = "myroot", nroot = length(attr(func,
+    arglist <- c(arglist, list(rootfunc = paste0(func, "_myroot"), nroot = length(attr(func,
                                                                         "rootfunc"))))
   if (!is.null(yout)) {
     arglist <- c(arglist, list(nout = length(yout), outnames = yout))
@@ -187,7 +187,7 @@ Xs_steady <- function(odemodel, forcings=NULL, events=NULL, names = NULL, condit
     if (!deriv) {
 
       # Evaluate model without sensitivities
-      loadDLL(func)
+      # loadDLL(func)
       if (!is.null(forcings)) forc <- setForcings(func, forcings) else forc <- NULL
       out <- do.call(runsteadyC, c(list(y=yini, times=times, func=func, parms=pars, forcings=forc,events = list(data = events)), optionsOde))
       out <- submatrix(out, cols = c("time", names))
@@ -197,7 +197,7 @@ Xs_steady <- function(odemodel, forcings=NULL, events=NULL, names = NULL, condit
     } else {
 
       # Evaluate extended model
-      loadDLL(extended)
+      # loadDLL(extended)
       if (!is.null(forcings)) forc <- setForcings(extended, forcings) else forc <- NULL
       outSens <- do.call(runsteadyC, c(list(y = c(unclass(yini), yiniSens), times = times, func = extended, parms = mypars,
                                             forcings = forc,
@@ -231,6 +231,7 @@ Xs_steady <- function(odemodel, forcings=NULL, events=NULL, names = NULL, condit
   attr(P2X, "equations") <- as.eqnvec(attr(func, "equations"))
   attr(P2X, "forcings") <- forcings
   attr(P2X, "events") <- events
+  attr(P2X, "modelname") <- func[1]
 
 
   prdfn(P2X, c(variables, parameters), condition)
