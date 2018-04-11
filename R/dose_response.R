@@ -108,12 +108,15 @@ r_opt_dose_response <- function(which_par,
                                 obs_fun = g,
                                 p_fun = (p_log * p_pert),
                                 pars = pars_0,
-                                pars_opt_default_value = 0) {
+                                pars_opt_default_value = 0,
+                                cores = detectFreeCores()) {
 
 
   r_names_0 <- paste0("r", outer(as.character(1:length(modules0)),as.character(1:length(modules0)), paste0))
 
-  out <- lapply(dosages, function(dose) {
+
+
+  out <- mclapply(X=dosages, mc.cores = 2, function(dose) {
 
     pars[which_par] <- structure(dose, names = which_par)
 
@@ -200,12 +203,13 @@ r_opt_dose_response <- function(which_par,
 
         assign("obj", obj_alpha, envir = .GlobalEnv)
 
+
         myfits <- mstrust(obj,
                           center =  structure(rep(-1, sum(which_pars_opt(pars_opt,r_kept,modules))), names = names(pars_opt[which_pars_opt(pars_opt,r_kept,modules)])), # center around log(pars_opt) = -1
                           studyname = "pars_controlled",
                           resultPath = ".pars_controlled/",
-                          cores = 3,
-                          fits = 9,
+                          cores = round(cores/2),
+                          fits = round(cores/2),
                           sd = 1,
                           perturbation_prediction = perturbation_prediction,
                           r_kept = r_kept,

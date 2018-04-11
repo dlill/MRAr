@@ -12,6 +12,7 @@
 #' @param p_fun Parameter transformation which returns different conditions
 #' @param mypars Parameters of the ODE model
 #' @param method method for taking the derivative wrt pars_opt.
+#' @param ... not needed except for throwing away an unnecessary input when applying the new mstrust
 #'
 #'
 #' @return
@@ -25,7 +26,8 @@ obj_alpha <- function(pars = pars_opt_0,
                       obs_fun = g,
                       p_fun = (p_log * p_pert),
                       mypars = pars_0,
-                      method = "simple") {
+                      method = "simple",
+                      ...) {
 
   # implement functionality of "fixed" when it is needed...
   if (!is.null(fixed)) {

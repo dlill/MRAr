@@ -7,7 +7,7 @@
 obj_alpha(pars = pars_opt_0, fixed = NULL,
   perturbation_prediction = perturbation_prediction_0, r_kept = r_kept_0,
   obs_fun = g, p_fun = (p_log * p_pert), mypars = pars_0,
-  method = "simple")
+  method = "simple", ...)
 }
 \arguments{
 \item{pars}{Free parameters a_ij to control the influence of the complexes}
@@ -25,6 +25,8 @@ obj_alpha(pars = pars_opt_0, fixed = NULL,
 \item{mypars}{Parameters of the ODE model}
 
 \item{method}{method for taking the derivative wrt pars_opt.}
+
+\item{...}{not needed except for throwing away an unnecessary input when applying the new mstrust}
 }
 \description{
 This function squares all elements that flip sign once the complexes are added to the observation.

@@ -2,15 +2,19 @@
 #'
 #' A parameter transformation function to conveniently generate conditions, in which on parameter was perturbed
 #'
+#' Attention: if !is.null(modelname) you have to run compile(p_pert) after calling p_pert <- p_pert_fun(..)
+#'
 #' @param pars_perturbed A named vector with the changes on the log scale of the perturbed parameters.
 #' @param pars All parameters of the model.
+#'
 #'
 #' @return A parameter trafo function of class parfn, which goes from pars_outer (log scale) to pars_outer (log scale)
 #' @export
 #'
 #' @examples
 p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
-                       pars = pars_0) {
+                       pars = pars_0,
+                       modelname = "p_pert") {
 
 
   p_control <- P(structure(names(pars), names = names(pars)),
@@ -23,15 +27,23 @@ p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
 
     mytrafo[names(pars_perturbed)[i]] <- paste0(names(pars_perturbed)[i], " + 1 * (", pars_perturbed[i], ")")
 
-    p <- P(mytrafo,
-           condition = paste0(names(pars_perturbed)[i], " ", round(pars_perturbed[i],1)),
-           compile = T,
-           modelname = paste0("p_pert",i))
+    if(!is.null(modelname)) {
+      p <- P(mytrafo,
+             condition = paste0(names(pars_perturbed)[i], " ", round(pars_perturbed[i],1)),
+             compile = F,
+             modelname = paste0("p_pert",i))
+    } else {
+      p <- P(mytrafo,
+             condition = paste0(names(pars_perturbed)[i], " ", round(pars_perturbed[i],1)))
+    }
+
   })
 
   p_pert <- NULL
   p_pert <- p_pert + p_control
   for(i in 1:length(p_pert_list)) p_pert <- p_pert + p_pert_list[[i]]
+
+  if(!is.null(modelname)) message("please run compile() on the output of this function")
 
   return(p_pert)
 }

@@ -4,7 +4,8 @@
 \alias{p_pert_fun}
 \title{Convenient simulation of perturbation experiments}
 \usage{
-p_pert_fun(pars_perturbed = pars_perturbed_0, pars = pars_0)
+p_pert_fun(pars_perturbed = pars_perturbed_0, pars = pars_0,
+  modelname = "p_pert")
 }
 \arguments{
 \item{pars_perturbed}{A named vector with the changes on the log scale of the perturbed parameters.}
@@ -16,4 +17,7 @@ A parameter trafo function of class parfn, which goes from pars_outer (log scale
 }
 \description{
 A parameter transformation function to conveniently generate conditions, in which on parameter was perturbed
+}
+\details{
+Attention: if !is.null(modelname) you have to run compile(p_pert) after calling p_pert <- p_pert_fun(..)
 }
