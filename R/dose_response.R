@@ -33,7 +33,7 @@ dose_response_fun <- function(which_par, dosages, pars = pars_0, predfun = (xs*p
 
   observed_names <- colnames(d_r)[-c(1:3)]
 
-  d_r <- gather_(data = d_r, key_col = "name", value_col =  "value", gather_cols = observed_names, factor_key = T)
+  d_r <- gather(data = d_r, key = "name", value =  "value", rlang::UQS(rlang::syms(observed_names)), factor_key = T)
   return(d_r)
 
 }
@@ -138,7 +138,7 @@ r_opt_dose_response <- function(which_par,
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
-      tidyr::gather_(key = "r_element", value = "r_alpha", gather_cols = r_names_0)
+      tidyr::gather(key = "r_element", value = "r_alpha", rlang::UQS(rlang::syms(r_names_0)))
 
 
     # r_0
@@ -152,7 +152,7 @@ r_opt_dose_response <- function(which_par,
     r_kept_df <- sapply(alpha_scan_range, function(a) {
       myr <- r_alpha_df %>%
         dplyr::filter(alpha == a) %>%
-        extract2("r_alpha") %>%
+        .[["r_alpha"]] %>%
         matrix(nrow = length(modules0))
       # print(myr)
       return(r_kept_fun2(r_0,myr))
@@ -162,7 +162,7 @@ r_opt_dose_response <- function(which_par,
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
-      tidyr::gather_(key = "r_element", value = "r_kept", gather_cols = r_names_0)
+      gather(key = "r_element", value = "r_kept", rlang::UQS(rlang::syms(r_names_0)))
 
     # r_kept <- r_kept_df  %>%  # könnte man evtl auch mit "jitter" lösen
     #   extract2(2) %>%
@@ -193,7 +193,7 @@ r_opt_dose_response <- function(which_par,
 
         r_kept <- r_kept_df %>%
           dplyr::filter(alpha == alpha_scan_range[i] ) %>%
-          extract2("r_kept") %>%
+          .[["r_kept"]] %>%
           is_greater_than(0.5) %>%
           matrix(nrow = length(modules0))
 
@@ -253,7 +253,7 @@ r_opt_dose_response <- function(which_par,
       t %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
-      tidyr::gather_(key = "r_element", value = "r_opt", gather_cols = r_names_0)
+      tidyr::gather(key = "r_element", value = "r_opt", rlang::UQS(rlang::syms(r_names_0)))
 
 
     steady_states <- (xs*p_fun)(times = c(0,Inf), pars = pars, deriv = F)
@@ -267,7 +267,8 @@ r_opt_dose_response <- function(which_par,
   }) %>%
     do.call(rbind,.) %>%
     gather(key = "matrix", value  = "value", r_alpha, r_kept, r_opt) %>%
-    gather_(key_col = "par_opt", value_col  = "par_opt_value", gather_cols = names(pars_opt))
+    # gather_(key_col = "par_opt", value_col  = "par_opt_value", gather_cols = names(pars_opt))
+    gather(key = "par_opt", value  = "par_opt_value", rlang::UQS(rlang::syms(names(pars_opt))))
 
 }
 
@@ -325,7 +326,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
-      tidyr::gather_(key = "r_element", value = "r_alpha", gather_cols = r_names_0)
+      tidyr::gather(key = "r_element", value = "r_alpha", rlang::UQS(rlang::syms(r_names_0)))
 
 
     # r_0
@@ -339,7 +340,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
     r_kept_df <- sapply(alpha_scan_range, function(a) {
       myr <- r_alpha_df %>%
         dplyr::filter(alpha == a) %>%
-        extract2("r_alpha") %>%
+        .[["r_alpha"]] %>%
         matrix(nrow = length(modules0))
       # print(myr)
       return(r_kept_fun2(r_0,myr))
@@ -349,7 +350,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
-      tidyr::gather_(key = "r_element", value = "r_kept", gather_cols = r_names_0)
+      tidyr::gather(key = "r_element", value = "r_kept", rlang::UQS(rlang::syms(r_names_0)))
 
     # r_kept <- r_kept_df  %>%  # könnte man evtl auch mit "jitter" lösen
     #   extract2(2) %>%
@@ -380,7 +381,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
 
         r_kept <- r_kept_df %>%
           dplyr::filter(alpha == alpha_scan_range[i] ) %>%
-          extract2("r_kept") %>%
+          .[["r_kept"]] %>%
           is_greater_than(0.5) %>%
           matrix(nrow = length(modules0))
 
@@ -432,7 +433,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
       t %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
-      tidyr::gather_(key = "r_element", value = "r_opt", gather_cols = r_names_0)
+      tidyr::gather(key = "r_element", value = "r_opt", rlang::UQS(rlang::syms(r_names_0)))
 
 
     steady_states <- (xs*p_fun)(times = c(0,Inf), pars = pars, deriv = F)
@@ -446,7 +447,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
   }) %>%
     do.call(rbind,.) %>%
     gather(key = "matrix", value  = "value", r_alpha, r_kept, r_opt) %>%
-    gather_(key_col = "par_opt", value_col  = "par_opt_value", gather_cols = names(pars_opt))
+    gather(key = "par_opt", value  = "par_opt_value", rlang::UQS(rlang::syms(names(pars_opt))))
 
 }
 
