@@ -116,7 +116,7 @@ r_opt_dose_response <- function(which_par,
 
 
 
-  out <- mclapply(X=dosages, mc.cores = 2, function(dose) {
+  out <- lapply(dosages, function(dose) {
 
     pars[which_par] <- structure(dose, names = which_par)
 
@@ -157,7 +157,7 @@ r_opt_dose_response <- function(which_par,
       # print(myr)
       return(r_kept_fun2(r_0,myr))
     }) %>%
-      add(seq(0,0.05,length.out = length(r_names_0))) %>%  # könnte man evtl auch mit "jitter" lösen
+      {.+(seq(0,0.05,length.out = length(r_names_0)))} %>%  # könnte man evtl auch mit "jitter" lösen
       t %>%
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
@@ -194,7 +194,7 @@ r_opt_dose_response <- function(which_par,
         r_kept <- r_kept_df %>%
           dplyr::filter(alpha == alpha_scan_range[i] ) %>%
           .[["r_kept"]] %>%
-          is_greater_than(0.5) %>%
+          {.>0.5} %>%
           matrix(nrow = length(modules0))
 
         pars_opt[!which_pars_opt(pars_opt,r_kept,modules)] <- pars_opt_default_value
@@ -208,9 +208,9 @@ r_opt_dose_response <- function(which_par,
                           center =  structure(rep(-1, sum(which_pars_opt(pars_opt,r_kept,modules))), names = names(pars_opt[which_pars_opt(pars_opt,r_kept,modules)])), # center around log(pars_opt) = -1
                           studyname = "pars_controlled",
                           resultPath = ".pars_controlled/",
-                          cores = round(cores/2),
-                          fits = round(cores/2),
-                          sd = 1,
+                          cores = round(cores),
+                          fits = round(cores),
+                          sd = 2,
                           perturbation_prediction = perturbation_prediction,
                           r_kept = r_kept,
                           obs_fun = obs_fun,
@@ -264,7 +264,10 @@ r_opt_dose_response <- function(which_par,
     r_df <- data.frame(r_df, which_par = which_par, dose = dose)
 
     return(r_df)
-  }) %>%
+  })
+
+
+  out <- out %>%
     do.call(rbind,.) %>%
     gather(key = "matrix", value  = "value", r_alpha, r_kept, r_opt) %>%
     # gather_(key_col = "par_opt", value_col  = "par_opt_value", gather_cols = names(pars_opt))
@@ -345,7 +348,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
       # print(myr)
       return(r_kept_fun2(r_0,myr))
     }) %>%
-      add(seq(0,0.05,length.out = length(r_names_0))) %>%  # könnte man evtl auch mit "jitter" lösen
+      {.+(seq(0,0.05,length.out = length(r_names_0)))} %>%  # könnte man evtl auch mit "jitter" lösen
       t %>%
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
@@ -382,7 +385,7 @@ r_opt_dose_response_separate_scanning <- function(which_par,
         r_kept <- r_kept_df %>%
           dplyr::filter(alpha == alpha_scan_range[i] ) %>%
           .[["r_kept"]] %>%
-          is_greater_than(0.5) %>%
+          {.>0.5} %>%
           matrix(nrow = length(modules0))
 
         assign("obj", obj_alpha, envir = .GlobalEnv)
