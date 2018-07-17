@@ -12,5 +12,7 @@ Depends:
     deSolve,
     dMod,
     numDeriv,
-    conveniencefunctions
+    conveniencefunctions,
+    shiny,
+    miniUI
 RoxygenNote: 6.0.1

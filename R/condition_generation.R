@@ -17,14 +17,17 @@ p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
                        modelname = "p_pert") {
 
 
+  modelname_ctr <- "p_ctr"
+  if(is.null(modelname)) modelname_ctr <- NULL
+
   p_control <- P(structure(names(pars), names = names(pars)),
                  condition = "Ctr",
-                 compile = T,
-                 modelname = "p_ctr")
+                 compile = F,
+                 modelname = modelname_ctr)
 
   p_pert_list <- lapply(seq_along(pars_perturbed), function(i) {
-    mytrafo <- structure(names(pars), names = names(pars))
 
+    mytrafo <- structure(names(pars), names = names(pars))
     mytrafo[names(pars_perturbed)[i]] <- paste0(names(pars_perturbed)[i], " + 1 * (", pars_perturbed[i], ")")
 
     if(!is.null(modelname)) {
