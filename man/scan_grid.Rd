@@ -2,15 +2,32 @@
 % Please edit documentation in R/dose_response.R
 \name{scan_grid}
 \alias{scan_grid}
-\title{Title}
+\title{Scan a n-d grid of free parameters}
 \usage{
 scan_grid(which_par, dosages, alpha_scan_range = seq(-9, 9, by = 2), pars_opt,
   obs_fun, p_fun, pars, grid_points_fine = alpha_scan_range,
   grid_points_raw = c(-9, 0, 2))
 }
 \arguments{
-\item{grid_points_raw}{}
+\item{which_par}{Which dynamical parameter shall be scanned?}
+
+\item{dosages}{Scan range of this parameter}
+
+\item{alpha_scan_range}{Which values of free parameters a shall be scanned?}
+
+\item{pars_opt}{Free parameters a_ij to control the influence of the complexes}
+
+\item{obs_fun}{Observation function which returns the communicating species}
+
+\item{p_fun}{Parameter transformation which returns different conditions}
+
+\item{pars}{Parameters of the ODE model}
+
+\item{grid_points_fine}{...}
+
+\item{grid_points_raw}{...}
 }
 \description{
-Title
+Old, was just to test, if results get worse, when "alpha" is tuned simultaneously. In short, it doesn't most of the time.
+The gain does not justify the computational expenses from scanning the whole grid of free parameters.
 }

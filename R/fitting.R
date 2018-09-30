@@ -15,10 +15,7 @@
 #' @param ... not needed except for throwing away an unnecessary input when applying the new mstrust
 #'
 #'
-#' @return
 #' @export
-#'
-#' @examples
 obj_alpha <- function(pars,
                       fixed = NULL,
                       perturbation_prediction,
@@ -26,7 +23,7 @@ obj_alpha <- function(pars,
                       obs_fun,
                       p_fun,
                       mypars,
-                      method,
+                      method = "simple",
                       ...) {
 
   # implement functionality of "fixed" when it is needed...
@@ -65,17 +62,11 @@ obj_alpha <- function(pars,
 #' I used this function to compare different optimizers. trust() was as fast as optim, but more reliable.
 #' All other methods like simulated annealing were not as reliable.
 #'
-#' @param pars_opt
-#' @param perturbation_prediction
-#' @param r_kept
-#' @param obs_fun
-#' @param p_fun
-#' @param mypars
+#' @inheritParams obj_alpha
 #'
-#' @return
 #' @export
 #'
-#' @examples
+#'
 obj_alpha_no_derivs <- function(pars_opt,
                        perturbation_prediction,
                        r_kept,

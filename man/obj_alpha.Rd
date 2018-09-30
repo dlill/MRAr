@@ -5,7 +5,7 @@
 \title{Objective function to minimize certain elements of the local response matrix}
 \usage{
 obj_alpha(pars, fixed = NULL, perturbation_prediction, r_kept, obs_fun, p_fun,
-  mypars, method, ...)
+  mypars, method = "simple", ...)
 }
 \arguments{
 \item{pars}{Free parameters a_ij to control the influence of the complexes}

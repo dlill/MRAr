@@ -16,7 +16,6 @@ list(ic_list, modified pars)
 This can be used to clean the output, such that the condition description is not as long anymore.
 }
 \examples{
-
 pars <- c(a=5,b=1)
 ic_list <- c(a=1,b=1:2)
 pars[names(reduce_ic_list(ic_list)[[2]])] <- reduce_ic_list(ic_list)[[2]]

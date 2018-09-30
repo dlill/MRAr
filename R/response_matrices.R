@@ -7,7 +7,7 @@
 #' @return r The local response matrix, with the attribute which_pars_perturbed
 #' @export
 #'
-#' @examples
+#'
 local_response_matrix_eq10 <- function(R) {
 
   R_svd <- svd(R)
@@ -33,10 +33,10 @@ local_response_matrix_eq10 <- function(R) {
 #' @param p_fun Parameter transformation which returns different conditions
 #' @param pars Parameters of the ODE model
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 R_fun <- function(pars_opt,
                   perturbation_prediction,
                   obs_fun,
@@ -80,10 +80,10 @@ R_fun <- function(pars_opt,
 #' Since pars_opt_0 defaults to log(0+.Machine$double.eps), I chose its negative value as the default.
 #' This is basically the same as comparing r(0) with r(1)
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 r_kept_fun <- function(pars_opt,
                        perturbation_prediction,
                        obs_fun,
@@ -115,13 +115,11 @@ r_kept_fun <- function(pars_opt,
 #' Function to compare two local response matrices
 #' in order to choose which elements to keep in the minimization process
 #'
-#' @param r_0
-#' @param r_alpha
+#' @param r_0 calculated local response matrix with alpha = 0 (or logalpha -> -Inf)
+#' @param r_alpha calculated alocal response  matrix with alpha = alpha
 #'
-#' @return
+#'
 #' @export
-#'
-#' @examples
 r_kept_fun2 <-function(r_0, r_alpha) {
 
   # Which elements are kept in the optimization process?
@@ -139,10 +137,10 @@ r_kept_fun2 <-function(r_0, r_alpha) {
 #' @param p_fun Parameter transformation which returns different conditions
 #' @param pars Parameters of the ODE model
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 r_alpha_fun <- function(pars_opt,
                     perturbation_prediction,
                     obs_fun,
@@ -170,10 +168,10 @@ r_alpha_fun <- function(pars_opt,
 #' @param p_fun Parameter transformation which returns different conditions
 #' @param pars Parameters of the ODE model
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 R_fun_2 <- function(pars_opt,
                   perturbation_prediction,
                   obs_fun,

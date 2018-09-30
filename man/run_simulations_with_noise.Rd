@@ -9,9 +9,6 @@ run_simulations_with_noise(ic_list = NULL, n_samples = 100, sdlog = 0.01,
   pars_perturbed = pars_perturbed_0, fixed = NULL, alpha = 1,
   mixed = FALSE)
 }
-\arguments{
-\item{alpha}{}
-}
 \description{
 Run simulations with noise
 }

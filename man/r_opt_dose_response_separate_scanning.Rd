@@ -23,9 +23,6 @@ r_opt_dose_response_separate_scanning(which_par, dosages,
 
 \item{pars}{Parameters of the ODE model}
 }
-\value{
-
-}
 \description{
 Scan each free parameter a_ij individually while keeping others at fixed values.
 Optimize whenever a sign flip occurs

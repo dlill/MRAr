@@ -11,7 +11,7 @@
 #' @return A parameter trafo function of class parfn, which goes from pars_outer (log scale) to pars_outer (log scale)
 #' @export
 #'
-#' @examples
+#'
 p_pert_fun <- function(pars_perturbed,
                        pars,
                        modelname = NULL) {
@@ -68,7 +68,7 @@ p_pert_fun <- function(pars_perturbed,
 #' @return A "parfn" of all conditions.
 #' @export
 #'
-#' @examples
+#'
 p_ic_fun <- function(ic_list, pars, mixed = FALSE) {
 
 
@@ -110,8 +110,8 @@ p_ic_fun <- function(ic_list, pars, mixed = FALSE) {
 #' @return list(ic_list, modified pars)
 #' @export
 #'
-#' @examples
 #'
+#' @examples
 #' pars <- c(a=5,b=1)
 #' ic_list <- c(a=1,b=1:2)
 #' pars[names(reduce_ic_list(ic_list)[[2]])] <- reduce_ic_list(ic_list)[[2]]
@@ -134,10 +134,10 @@ reduce_ic_list <- function(ic_list) {
 #' @param mixed Should all combinations of the pars be gone through (TRUE)
 #' or should the other pars be set to their first value supplied, when scanning through a certain parameter?
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 p_ic_list_fun <- function(ic_list, pars, mixed = FALSE) {
 
   if(mixed) {

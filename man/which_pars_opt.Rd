@@ -6,9 +6,6 @@
 \usage{
 which_pars_opt(pars_opt, r_kept, modules)
 }
-\arguments{
-\item{modules}{}
-}
 \description{
 Which pars_opt are associated with an element kept in the optimization procedure
 }

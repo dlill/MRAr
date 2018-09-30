@@ -11,10 +11,10 @@
 #'
 #' @param p_ic_list
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 run_simulations <- function(ic_list = NULL,
                             nfits= 10,
                             cores = 3,
@@ -186,20 +186,12 @@ run_simulations <- function(ic_list = NULL,
 
 #' Run simulations with noise
 #'
-#' @param ic_list
-#' @param nfits
-#' @param cores
-#' @param pars_opt
-#' @param obs_fun
-#' @param pars
-#' @param pars_perturbed
-#' @param fixed
-#' @param alpha
+#' @inheritParams run_simulations
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 run_simulations_with_noise <- function(ic_list = NULL,
                             # nfits= 10,
                             n_samples = 100,

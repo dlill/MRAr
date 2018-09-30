@@ -8,7 +8,15 @@ obj_alpha_no_derivs(pars_opt, perturbation_prediction, r_kept, obs_fun, p_fun,
   mypars)
 }
 \arguments{
-\item{mypars}{}
+\item{perturbation_prediction}{Simulated steady state perturbation data}
+
+\item{r_kept}{elements kept in the minimization (=elements that describe sequestration connections)}
+
+\item{obs_fun}{Observation function which returns the communicating species}
+
+\item{p_fun}{Parameter transformation which returns different conditions}
+
+\item{mypars}{Parameters of the ODE model}
 }
 \description{
 I used this function to compare different optimizers. trust() was as fast as optim, but more reliable.

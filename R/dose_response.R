@@ -8,10 +8,10 @@
 #' @param pars dynamical parameters
 #' @param predfun prediction function, can be concatenated with parameter trafos and observation functions
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 dose_response_fun <- function(which_par, dosages, pars, predfun) {
 
   d_r <- mclapply(dosages, function(dose) {
@@ -42,10 +42,10 @@ dose_response_fun <- function(which_par, dosages, pars, predfun) {
 #'
 #' @param d_r
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 plot_dose_response <- function(d_r) {
   ggplot(d_r, aes(x = log(which_par), y = log(value), color = condition)) + facet_wrap(facets = ~name) + geom_line()+theme_dMod()
 }
@@ -56,10 +56,10 @@ plot_dose_response <- function(d_r) {
 #'
 #' @param dr_list
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 combine_dr_list <- function(dr_list) {
   dr_list_names <- dr_list %>%
     lapply(names) %>%
@@ -97,10 +97,10 @@ combine_dr_list <- function(dr_list) {
 #' @param p_fun Parameter transformation which returns different conditions
 #' @param pars Parameters of the ODE model
 #'
-#' @return
+#'
 #' @export
 #'
-#' @examples
+#'
 r_opt_dose_response <- function(which_par,
                                 dosages,
                                 alpha_scan_range = seq(-9,9,by = 2),
@@ -290,9 +290,9 @@ r_opt_dose_response <- function(which_par,
 #' @param p_fun Parameter transformation which returns different conditions
 #' @param pars Parameters of the ODE model
 #'
-#' @return
 #'
-#' @examples
+#'
+#'
 r_opt_dose_response_separate_scanning <- function(which_par,
                                                   dosages,
                                                   alpha_scan_range = seq(-9,9,by = 2),
@@ -456,22 +456,20 @@ r_opt_dose_response_separate_scanning <- function(which_par,
 
 
 
-#' Title
+#' Scan a n-d grid of free parameters
 #'
-#' @param which_par
-#' @param dosages
-#' @param alpha_scan_range
-#' @param pars_opt
-#' @param obs_fun
-#' @param p_fun
-#' @param pars
-#' @param grid_points_fine
-#' @param grid_points_raw
+#' Old, was just to test, if results get worse, when "alpha" is tuned simultaneously. In short, it doesn't most of the time.
+#' The gain does not justify the computational expenses from scanning the whole grid of free parameters.
 #'
-#' @return
+#'
+#' @inheritParams r_opt_dose_response
+#' @param grid_points_fine ...
+#' @param grid_points_raw ...
+#'
+#'
 #' @export
 #'
-#' @examples
+#'
 scan_grid <- function(which_par,
                       dosages,
                       alpha_scan_range = seq(-9,9,by = 2),

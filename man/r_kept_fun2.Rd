@@ -8,7 +8,9 @@ in order to choose which elements to keep in the minimization process}
 r_kept_fun2(r_0, r_alpha)
 }
 \arguments{
-\item{r_alpha}{}
+\item{r_0}{calculated local response matrix with alpha = 0 (or logalpha -> -Inf)}
+
+\item{r_alpha}{calculated alocal response  matrix with alpha = alpha}
 }
 \description{
 Function to compare two local response matrices

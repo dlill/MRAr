@@ -2,14 +2,9 @@
 
 #' Which pars_opt are associated with an element kept in the optimization procedure
 #'
-#' @param pars_opt
-#' @param r_kept
-#' @param modules
 #'
-#' @return
 #' @export
 #'
-#' @examples
 which_pars_opt <- function(pars_opt, r_kept, modules) {
 
   module_grid <- expand.grid(modules, modules, stringsAsFactors = F)
