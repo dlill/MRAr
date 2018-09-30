@@ -9,7 +9,7 @@ ropt_gadget(which_pars_opt, dMod.frame, hypothesis = 1)
 \arguments{
 \item{which_pars_opt}{All possible pars opt that you might want to include (you can kick them out later)}
 
-\item{dMod.frame}{the dMod.frame with additional columns p_pert and pars}
+\item{dMod.frame}{the dMod.frame with additional columns xs, p_pert, pars and pars_opt}
 
 \item{hypothesis}{indec to subset the dMod.frame}
 }

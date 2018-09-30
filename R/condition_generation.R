@@ -12,9 +12,9 @@
 #' @export
 #'
 #' @examples
-p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
-                       pars = pars_0,
-                       modelname = "p_pert") {
+p_pert_fun <- function(pars_perturbed,
+                       pars,
+                       modelname = NULL) {
 
 
   modelname_ctr <- "p_ctr"
@@ -69,7 +69,7 @@ p_pert_fun <- function(pars_perturbed = pars_perturbed_0,
 #' @export
 #'
 #' @examples
-p_ic_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
+p_ic_fun <- function(ic_list, pars, mixed = FALSE) {
 
 
   if(mixed) {
@@ -138,7 +138,7 @@ reduce_ic_list <- function(ic_list) {
 #' @export
 #'
 #' @examples
-p_ic_list_fun <- function(ic_list, pars = pars_0, mixed = FALSE) {
+p_ic_list_fun <- function(ic_list, pars, mixed = FALSE) {
 
   if(mixed) {
     mydf <- expand.grid(ic_list)

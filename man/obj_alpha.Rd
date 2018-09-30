@@ -4,10 +4,8 @@
 \alias{obj_alpha}
 \title{Objective function to minimize certain elements of the local response matrix}
 \usage{
-obj_alpha(pars = pars_opt_0, fixed = NULL,
-  perturbation_prediction = perturbation_prediction_0, r_kept = r_kept_0,
-  obs_fun = g, p_fun = (p_log * p_pert), mypars = pars_0,
-  method = "simple", ...)
+obj_alpha(pars, fixed = NULL, perturbation_prediction, r_kept, obs_fun, p_fun,
+  mypars, method, ...)
 }
 \arguments{
 \item{pars}{Free parameters a_ij to control the influence of the complexes}

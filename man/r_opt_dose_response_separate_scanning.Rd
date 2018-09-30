@@ -5,9 +5,8 @@
 \title{Compute dose responses for one parameter, scan pars_opt separately}
 \usage{
 r_opt_dose_response_separate_scanning(which_par, dosages,
-  alpha_scan_range = seq(-9, 9, by = 2), which_par_opt = "loga",
-  pars_opt = pars_opt_0, obs_fun = g, p_fun = (p_log * p_pert),
-  pars = pars_0)
+  alpha_scan_range = seq(-9, 9, by = 2), which_par_opt, pars_opt, obs_fun,
+  p_fun, pars)
 }
 \arguments{
 \item{which_par}{Which dynamical parameter shall be scanned?}

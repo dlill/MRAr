@@ -37,11 +37,11 @@ local_response_matrix_eq10 <- function(R) {
 #' @export
 #'
 #' @examples
-R_fun <- function(pars_opt = pars_opt_0,
-                  perturbation_prediction = perturbation_prediction_0,
-                  obs_fun = g,
-                  p_fun = (p_log*p_pert),
-                  pars = pars_0) {
+R_fun <- function(pars_opt,
+                  perturbation_prediction,
+                  obs_fun,
+                  p_fun,
+                  pars ) {
   mypars <- pars
   mypars[names(pars_opt)] <- pars_opt
   mypars <- p_fun(mypars, deriv = F)
@@ -65,24 +65,6 @@ R_fun <- function(pars_opt = pars_opt_0,
 
 
 
-#' Find elements Aij and Aji which are both non-zero
-#'
-#' @param mat a square matrix
-#'
-#' @return
-#' @export
-#'
-#' @examples
-find_symmetric_elements_both_nonzero <- function(mat, threshold = 0.01) {
-  myupper <- mat[upper.tri(mat)]
-  mylower <- t(mat)[upper.tri(mat)]
-
-  out <- matrix(FALSE, nrow = nrow(mat), ncol = ncol(mat))
-  out[upper.tri(out)] <- (abs(myupper) > threshold & abs(mylower) > threshold)
-  out <- out + t(out)
-  return(out)
-}
-
 #' Which elements to keep in the optimization procedure?
 #'
 #' This function compares the connection coefficient in the local response matrices when either only free
@@ -102,13 +84,12 @@ find_symmetric_elements_both_nonzero <- function(mat, threshold = 0.01) {
 #' @export
 #'
 #' @examples
-r_kept_fun <- function(pars_opt = pars_opt_0,
-                       perturbation_prediction = perturbation_prediction_0,
-                       obs_fun = g0,
-                       p_fun = (p_log*p_pert),
-                       pars = pars_0,
-                       alpha = -log(0+.Machine$double.eps),
-                       threshold = 0.01) {
+r_kept_fun <- function(pars_opt,
+                       perturbation_prediction,
+                       obs_fun,
+                       p_fun,
+                       pars,
+                       alpha = -log(0+.Machine$double.eps)) {
 
   r_0 <- R_fun(pars_opt = pars_opt,
                perturbation_prediction = perturbation_prediction,
@@ -127,15 +108,7 @@ r_kept_fun <- function(pars_opt = pars_opt_0,
   # sign switch
   sign_flips <- (sign(r_0) - sign(r_1)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
 
-  # small elements
-  # smalls <- abs(r_0) < 1e-3
-
-  # corresponding symmetric element is non-zero
-  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0, threshold = threshold)
-
-  keep <- (sign_flips & symmetric_elements) #| smalls
-
-  return(keep)
+  return(sign_flips)
 }
 
 
@@ -149,16 +122,12 @@ r_kept_fun <- function(pars_opt = pars_opt_0,
 #' @export
 #'
 #' @examples
-r_kept_fun2 <-function(r_0, r_alpha, threshold = 0.01) {
+r_kept_fun2 <-function(r_0, r_alpha) {
 
   # Which elements are kept in the optimization process?
   sign_flips <- (sign(r_0) - sign(r_alpha)) %>% as.logical() %>% matrix(nrow = nrow(r_0))
 
-  # corresponding symmetric element is non-zero
-  symmetric_elements <- find_symmetric_elements_both_nonzero(r_0, threshold = threshold)
-
-  keep <- (sign_flips & symmetric_elements)
-  return(keep)
+  return(sign_flips)
 }
 
 
@@ -174,11 +143,11 @@ r_kept_fun2 <-function(r_0, r_alpha, threshold = 0.01) {
 #' @export
 #'
 #' @examples
-r_alpha_fun <- function(pars_opt = pars_opt_0,
-                    perturbation_prediction = perturbation_prediction_0,
-                    obs_fun = g0,
-                    p_fun = (p_log*p_pert),
-                    pars = pars_0) {
+r_alpha_fun <- function(pars_opt,
+                    perturbation_prediction,
+                    obs_fun,
+                    p_fun,
+                    pars) {
 
   R_fun(pars_opt = pars_opt,
         perturbation_prediction = perturbation_prediction,
@@ -205,12 +174,11 @@ r_alpha_fun <- function(pars_opt = pars_opt_0,
 #' @export
 #'
 #' @examples
-R_fun_2 <- function(pars_opt = pars_opt_0,
-                  perturbation_prediction = perturbation_prediction_0,
-                  obs_fun = g,
-                  # p_fun = (p_log*p_pert),
-                  p_fun = (p_pert),
-                  pars = pars_0) {
+R_fun_2 <- function(pars_opt,
+                  perturbation_prediction,
+                  obs_fun,
+                  p_fun,
+                  pars) {
 
 
   mypars <- pars

@@ -4,9 +4,8 @@
 \alias{obj_alpha_no_derivs}
 \title{Objective function which doesn't compute derivatives}
 \usage{
-obj_alpha_no_derivs(pars_opt = pars_opt_0,
-  perturbation_prediction = perturbation_prediction_0, r_kept = r_kept_0,
-  obs_fun = g, p_fun = (p_log * p_pert), mypars = pars_0)
+obj_alpha_no_derivs(pars_opt, perturbation_prediction, r_kept, obs_fun, p_fun,
+  mypars)
 }
 \arguments{
 \item{mypars}{}

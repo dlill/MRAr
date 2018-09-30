@@ -19,14 +19,14 @@
 #' @export
 #'
 #' @examples
-obj_alpha <- function(pars = pars_opt_0,
+obj_alpha <- function(pars,
                       fixed = NULL,
-                      perturbation_prediction = perturbation_prediction_0,
-                      r_kept = r_kept_0,
-                      obs_fun = g,
-                      p_fun = (p_log * p_pert),
-                      mypars = pars_0,
-                      method = "simple",
+                      perturbation_prediction,
+                      r_kept,
+                      obs_fun,
+                      p_fun,
+                      mypars,
+                      method,
                       ...) {
 
   # implement functionality of "fixed" when it is needed...
@@ -76,12 +76,12 @@ obj_alpha <- function(pars = pars_opt_0,
 #' @export
 #'
 #' @examples
-obj_alpha_no_derivs <- function(pars_opt = pars_opt_0,
-                       perturbation_prediction = perturbation_prediction_0,
-                       r_kept = r_kept_0,
-                       obs_fun = g,
-                       p_fun = (p_log * p_pert),
-                       mypars = pars_0
+obj_alpha_no_derivs <- function(pars_opt,
+                       perturbation_prediction,
+                       r_kept,
+                       obs_fun,
+                       p_fun,
+                       mypars
 ) {
 
 

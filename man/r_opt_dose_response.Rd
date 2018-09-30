@@ -5,8 +5,7 @@
 \title{Compute dose responses for one parameter}
 \usage{
 r_opt_dose_response(which_par, dosages, alpha_scan_range = seq(-9, 9, by = 2),
-  pars_opt = pars_opt_0, obs_fun = g, p_fun = (p_log * p_pert),
-  pars = pars_0, pars_opt_default_value = 0, cores = detectFreeCores())
+  pars_opt, obs_fun, p_fun, pars, pars_opt_default_value, cores = 1)
 }
 \arguments{
 \item{which_par}{Which dynamical parameter shall be scanned?}

@@ -4,7 +4,7 @@
 \alias{dose_response_fun}
 \title{Compute dose-response curves}
 \usage{
-dose_response_fun(which_par, dosages, pars = pars_0, predfun = (xs * p_log))
+dose_response_fun(which_par, dosages, pars, predfun)
 }
 \arguments{
 \item{which_par}{Character of length 1: Which par to perturb}

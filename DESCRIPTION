@@ -8,11 +8,11 @@ Description: This is a collection of functions to do simulations with Modular Re
 License: What license is it under?
 LazyData: TRUE
 Depends:
-    rootSolve,
+    conveniencefunctions
+Imports:rootSolve,
     deSolve,
     dMod,
     numDeriv,
-    conveniencefunctions,
     shiny,
     miniUI
 RoxygenNote: 6.0.1

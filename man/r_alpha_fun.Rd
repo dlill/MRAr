@@ -4,9 +4,7 @@
 \alias{r_alpha_fun}
 \title{Parametric local response matrix}
 \usage{
-r_alpha_fun(pars_opt = pars_opt_0,
-  perturbation_prediction = perturbation_prediction_0, obs_fun = g0,
-  p_fun = (p_log * p_pert), pars = pars_0)
+r_alpha_fun(pars_opt, perturbation_prediction, obs_fun, p_fun, pars)
 }
 \arguments{
 \item{pars_opt}{Free parameters a_ij to control the influence of the complexes}

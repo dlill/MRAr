@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-dose_response_fun <- function(which_par, dosages, pars = pars_0, predfun = (xs*p_log)) {
+dose_response_fun <- function(which_par, dosages, pars, predfun) {
 
   d_r <- mclapply(dosages, function(dose) {
 
@@ -104,12 +104,12 @@ combine_dr_list <- function(dr_list) {
 r_opt_dose_response <- function(which_par,
                                 dosages,
                                 alpha_scan_range = seq(-9,9,by = 2),
-                                pars_opt = pars_opt_0,
-                                obs_fun = g,
-                                p_fun = (p_log * p_pert),
-                                pars = pars_0,
-                                pars_opt_default_value = 0,
-                                cores = detectFreeCores()) {
+                                pars_opt,
+                                obs_fun,
+                                p_fun,
+                                pars,
+                                pars_opt_default_value,
+                                cores = 1) {
 
 
   r_names_0 <- paste0("r", outer(as.character(1:length(modules0)),as.character(1:length(modules0)), paste0))
@@ -296,11 +296,11 @@ r_opt_dose_response <- function(which_par,
 r_opt_dose_response_separate_scanning <- function(which_par,
                                                   dosages,
                                                   alpha_scan_range = seq(-9,9,by = 2),
-                                                  which_par_opt = "loga",
-                                                  pars_opt = pars_opt_0,
-                                                  obs_fun = g,
-                                                  p_fun = (p_log * p_pert),
-                                                  pars = pars_0) {
+                                                  which_par_opt,
+                                                  pars_opt,
+                                                  obs_fun,
+                                                  p_fun,
+                                                  pars) {
 
 
   r_names_0 <- paste0("r", outer(as.character(1:length(modules0)),as.character(1:length(modules0)), paste0))
@@ -475,10 +475,10 @@ r_opt_dose_response_separate_scanning <- function(which_par,
 scan_grid <- function(which_par,
                       dosages,
                       alpha_scan_range = seq(-9,9,by = 2),
-                      pars_opt = pars_opt_0,
-                      obs_fun = g,
-                      p_fun = (p_log * p_pert),
-                      pars = pars_0,
+                      pars_opt,
+                      obs_fun ,
+                      p_fun,
+                      pars,
                       grid_points_fine = alpha_scan_range,
                       grid_points_raw = c(-9, 0, 2)) {
 

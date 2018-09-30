@@ -5,9 +5,7 @@
 \title{Compute R from fractional changes of steady states,
 but do the linear combination only after the derivatives have been taken}
 \usage{
-R_fun_2(pars_opt = pars_opt_0,
-  perturbation_prediction = perturbation_prediction_0, obs_fun = g,
-  p_fun = (p_pert), pars = pars_0)
+R_fun_2(pars_opt, perturbation_prediction, obs_fun, p_fun, pars)
 }
 \arguments{
 \item{pars_opt}{Free parameters a_ij to control the influence of the complexes}

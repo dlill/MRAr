@@ -4,10 +4,8 @@
 \alias{r_kept_fun}
 \title{Which elements to keep in the optimization procedure?}
 \usage{
-r_kept_fun(pars_opt = pars_opt_0,
-  perturbation_prediction = perturbation_prediction_0, obs_fun = g0,
-  p_fun = (p_log * p_pert), pars = pars_0, alpha = -log(0 +
-  .Machine$double.eps), threshold = 0.01)
+r_kept_fun(pars_opt, perturbation_prediction, obs_fun, p_fun, pars,
+  alpha = -log(0 + .Machine$double.eps))
 }
 \arguments{
 \item{pars_opt}{Free parameters a_ij to control the influence of the complexes}
