@@ -5,9 +5,11 @@
 \title{Run a set of dirreent perturbations over varying alphas and a parameter which can be varied}
 \usage{
 run_different_perturbations(dose_pars, pars0, alphas, perturbations, xs, p_log,
-  p_pert, g, cores)
+  p_pert, g, cores, alpha_par_settings)
 }
 \arguments{
+\item{dose_pars}{dosages eg 1:10 %>% setNames("x1")}
+
 \item{pars0}{the "default" pars for the model}
 
 \item{alphas}{vector of values for the free pars a to compare r_0 against r_a}
@@ -24,7 +26,7 @@ run_different_perturbations(dose_pars, pars0, alphas, perturbations, xs, p_log,
 
 \item{cores}{detectFreeCores()}
 
-\item{u2sdose_pars}{vector of parameter values, they must be named}
+\item{alpha_par_settings}{named list e.g. list(upstream = c("a_tox_Cxy", "a_toy_Cyz"))}
 }
 \value{
 a tibble

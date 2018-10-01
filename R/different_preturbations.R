@@ -1,6 +1,5 @@
 #' Run a set of dirreent perturbations over varying alphas and a parameter which can be varied
 #'
-#' @param u2sdose_pars vector of parameter values, they must be named
 #' @param pars0 the "default" pars for the model
 #' @param alphas vector of values for the free pars a to compare r_0 against r_a
 #' @param perturbations list of sets of perturbations eg list(c(x1 = log(0.9), y1 = log(0.9)))
@@ -9,12 +8,15 @@
 #' @param g g
 #' @param cores detectFreeCores()
 #' @param p_pert p_pert
+#' @param dose_pars dosages eg 1:10 %>% setNames("x1")
+#' @param alpha_par_settings  named list e.g. list(upstream = c("a_tox_Cxy", "a_toy_Cyz"))
 #'
 #' @return a tibble
 #' @export
-run_different_perturbations <- function(dose_pars, pars0, alphas, perturbations, xs, p_log, p_pert, g, cores) {
+run_different_perturbations <- function(dose_pars, pars0, alphas, perturbations, xs, p_log, p_pert, g, cores, alpha_par_settings ) {
 
-  map(dose_pars, function(dose_par) {
+  map(seq_along(dose_pars), function(dose_par) {
+    dose_par <- dose_pars[dose_par]
     pars <- pars0
     pars[names(dose_par)] <- dose_par
 
@@ -76,16 +78,17 @@ run_different_perturbations <- function(dose_pars, pars0, alphas, perturbations,
           return(out)
         }
 
-        to_upstream_module <- algo(c("a_tox_Cxy", "a_toy_Cyz", "a_toz_Czx"), "upstream")
-        to_both_modules <- algo(c("a_Cxy", "a_Cyz", "a_Czx"), "both")
+algo_results <- imap(alpha_par_settings, ~algo(.x, .y)) %>% bind_cols
+
+        # to_upstream_module <- algo(c("a_tox_Cxy", "a_toy_Cyz", "a_toz_Czx"), "upstream")
+        # to_both_modules <- algo(c("a_Cxy", "a_Cyz", "a_Czx"), "both")
 
         bind_cols(tibble(r_0 = list(r_0 %>% round(2)),
                          pars_perturbed = list(myperturbation),
                          alpha = alpha,
                          dose_name = names(dose_par),
                          dose_par = dose_par),
-                  to_upstream_module,
-                  to_both_modules)
+                  algo_results)
       }, mc.cores = cores) %>%
         do.call(rbind,.)
     }) %>%
