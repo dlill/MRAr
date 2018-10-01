@@ -106,6 +106,7 @@ run_different_perturbations <- function(dose_pars, pars0, alphas, perturbations,
 #' @param col_start regex like "up_" or "both_"
 #' @param nclust nclusters
 #' @param which_clust print perturbations of which cluster?
+#' @export
 cluster_matrices_and_print_perturbations <- function(results_unnested_matrices, a, col_start, nclust, which_clust) {
   kclusts <- results_unnested_matrices %>%
     filter(near(alpha, a)) %>%
@@ -138,6 +139,7 @@ cluster_matrices_and_print_perturbations <- function(results_unnested_matrices, 
 #' @param pars,xs,obs_fun,p_log objects that were used to generate the result
 #'
 #' @return list of matrices
+#' @export
 get_r0_r1_ropt_rkept <- function(results, a, pp, pars, xs, obs_fun, p_log) {
   myresults <- filter(results, alpha == a, map_lgl(pars_perturbed, . %>% names %>% identical(pp)))
 
