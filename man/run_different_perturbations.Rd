@@ -8,7 +8,7 @@ run_different_perturbations(dose_pars, pars0, alphas, perturbations, xs, p_log,
   p_pert, g, cores, alpha_par_settings)
 }
 \arguments{
-\item{dose_pars}{dosages eg 1:10 %>% setNames("x1")}
+\item{dose_pars}{dosages eg  setNames(1:10, "x1")}
 
 \item{pars0}{the "default" pars for the model}
 

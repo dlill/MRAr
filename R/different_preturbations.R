@@ -8,7 +8,7 @@
 #' @param g g
 #' @param cores detectFreeCores()
 #' @param p_pert p_pert
-#' @param dose_pars dosages eg 1:10 %>% setNames("x1")
+#' @param dose_pars dosages eg  setNames(1:10, "x1")
 #' @param alpha_par_settings  named list e.g. list(upstream = c("a_tox_Cxy", "a_toy_Cyz"))
 #'
 #' @return a tibble
@@ -78,7 +78,7 @@ run_different_perturbations <- function(dose_pars, pars0, alphas, perturbations,
           return(out)
         }
 
-algo_results <- imap(alpha_par_settings, ~algo(.x, .y)) %>% bind_cols
+        algo_results <- imap(alpha_par_settings, ~algo(.x, .y)) %>% bind_cols
 
         # to_upstream_module <- algo(c("a_tox_Cxy", "a_toy_Cyz", "a_toz_Czx"), "upstream")
         # to_both_modules <- algo(c("a_Cxy", "a_Cyz", "a_Czx"), "both")
