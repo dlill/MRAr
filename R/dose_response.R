@@ -96,7 +96,8 @@ combine_dr_list <- function(dr_list) {
 #' @param obs_fun Observation function which returns the communicating species
 #' @param p_fun Parameter transformation which returns different conditions
 #' @param pars Parameters of the ODE model
-#'
+#' @param pars_opt_default_value log(.Machine$double.eps)
+#' @param cores ncores for paralleli
 #'
 #' @export
 #'
@@ -108,12 +109,11 @@ r_opt_dose_response <- function(which_par,
                                 obs_fun,
                                 p_fun,
                                 pars,
-                                pars_opt_default_value,
+                                pars_opt_default_value = log(.Machine$double.eps),
                                 cores = 1) {
 
-
-  r_names_0 <- paste0("r", outer(as.character(1:length(modules0)),as.character(1:length(modules0)), paste0))
-
+  module_names <- getEquations(obs_fun)[[1]]
+  r_names_0 <- paste0("r", outer(as.character(1:length(module_names)),as.character(1:length(module_names)), paste0))
 
 
   out <- lapply(dosages, function(dose) {
@@ -153,7 +153,7 @@ r_opt_dose_response <- function(which_par,
       myr <- r_alpha_df %>%
         dplyr::filter(alpha == a) %>%
         .[["r_alpha"]] %>%
-        matrix(nrow = length(modules0))
+        matrix(nrow = length(module_names))
       # print(myr)
       return(r_kept_fun2(r_0,myr))
     }) %>%
@@ -195,7 +195,7 @@ r_opt_dose_response <- function(which_par,
           dplyr::filter(alpha == alpha_scan_range[i] ) %>%
           .[["r_kept"]] %>%
           {.>0.5} %>%
-          matrix(nrow = length(modules0))
+          matrix(nrow = length(module_names))
 
         pars_opt[!which_pars_opt(pars_opt,r_kept,modules)] <- pars_opt_default_value
         pars[names(pars_opt)] <- pars_opt
