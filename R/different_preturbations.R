@@ -1,23 +1,28 @@
 #' Run a set of dirreent perturbations over varying alphas and a parameter which can be varied
 #'
+#' @param dose_pars dosages eg  setNames(1:10, "x1")
 #' @param pars0 the "default" pars for the model
+#' @param alpha_pars The default alpha parameters e.g. c(a_tox_Cxy = log(.Machine$double.eps))
 #' @param alphas vector of values for the free pars a to compare r_0 against r_a
 #' @param perturbations list of sets of perturbations eg list(c(x1 = log(0.9), y1 = log(0.9)))
 #' @param xs xs
 #' @param p_log p_log
+#' @param p_pert p_pert
 #' @param g g
 #' @param cores detectFreeCores()
-#' @param p_pert p_pert
-#' @param dose_pars dosages eg  setNames(1:10, "x1")
-#' @param alpha_par_settings  named list e.g. list(upstream = c("a_tox_Cxy", "a_toy_Cyz"))
+#' @param alpha_par_settings  named list. Entries are vectors of the names of aplha_pars you want to use for the algorithm e.g. list(upstream = c("a_tox_Cxy", "a_toy_Cyz"))
 #'
 #' @return a tibble
 #' @export
-run_different_perturbations <- function(dose_pars, pars0, alphas, perturbations, xs, p_log, p_pert, g, cores, alpha_par_settings ) {
+run_different_perturbations <- function(dose_pars, pars0, alpha_pars, alphas, perturbations, xs, p_log, p_pert, g, cores, alpha_par_settings) {
 
   map(seq_along(dose_pars), function(dose_par) {
     dose_par <- dose_pars[dose_par]
     pars <- pars0
+
+    if (names(dose_par) %in% names(pars))
+      stop("Dose parameter not in pars")
+
     pars[names(dose_par)] <- dose_par
 
     map(alphas, function(alpha) {
@@ -35,6 +40,8 @@ run_different_perturbations <- function(dose_pars, pars0, alphas, perturbations,
         if(inherits(r_0, "try-error")) return(NULL)
 
         algo <- function(which_alpha_pars, prefix = NULL) {
+
+          if (any(!which_alpha_pars %in% names(alpha_pars)))
 
           out <- tibble(r_kept = list(NULL), parframes = list(NULL), r_opt = list(NULL))
 
