@@ -19,8 +19,8 @@ run_different_perturbations <- function(dose_pars, pars0, alpha_pars, alphas, pe
   map(seq_along(dose_pars), function(dose_par) {
     dose_par <- dose_pars[dose_par]
     pars <- pars0
-
-    if (names(dose_par) %in% names(pars))
+# browser()
+    if (!(names(dose_par) %in% names(pars)))
       stop("Dose parameter not in pars")
 
     pars[names(dose_par)] <- dose_par
@@ -40,10 +40,11 @@ run_different_perturbations <- function(dose_pars, pars0, alpha_pars, alphas, pe
         if(inherits(r_0, "try-error")) return(NULL)
 
         algo <- function(which_alpha_pars, prefix = NULL) {
+# browser()
+          if (any(!(which_alpha_pars %in% names(alpha_pars))))
+            stop("some alpha_pars in alpha_pars_settings which don't exist in alpha_pars")
 
-          if (any(!which_alpha_pars %in% names(alpha_pars)))
-
-          out <- tibble(r_kept = list(NULL), parframes = list(NULL), r_opt = list(NULL))
+          out <- tibble(r_1 = list(NULL), r_kept = list(NULL), parframes = list(NULL), r_opt = list(NULL))
 
           r_1 <- R_fun(pars_opt = alpha_pars[which_alpha_pars] * 0 + alpha,
                        perturbation_prediction = perturbation_prediction,
