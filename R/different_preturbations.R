@@ -86,17 +86,23 @@ run_different_perturbations <- function(dose_pars, pars0, alpha_pars, alphas, pe
           return(out)
         }
 
-        algo_results <- imap(alpha_par_settings, ~algo(.x, .y)) %>% bind_cols
+        algo_results <- imap(alpha_par_settings, ~try(algo(.x, .y)))# %>% bind_cols
 
         # to_upstream_module <- algo(c("a_tox_Cxy", "a_toy_Cyz", "a_toz_Czx"), "upstream")
         # to_both_modules <- algo(c("a_Cxy", "a_Cyz", "a_Czx"), "both")
 
-        bind_cols(tibble(r_0 = list(r_0 %>% round(2)),
-                         pars_perturbed = list(myperturbation),
-                         alpha = alpha,
-                         dose_name = names(dose_par),
-                         dose_par = dose_par),
-                  algo_results)
+        # bind_cols(tibble(r_0 = list(r_0 %>% round(2)),
+        #                  pars_perturbed = list(myperturbation),
+        #                  alpha = alpha,
+        #                  dose_name = names(dose_par),
+        #                  dose_par = dose_par),
+        #           algo_results)
+        list(r_0 = list(r_0 %>% round(2)),
+             pars_perturbed = list(myperturbation),
+             alpha = alpha,
+             dose_name = names(dose_par),
+             dose_par = dose_par,
+        algo_results = algo_results)
       }, mc.cores = cores) %>%
         do.call(rbind,.)
     }) %>%
