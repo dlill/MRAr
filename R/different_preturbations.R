@@ -93,18 +93,13 @@ run_different_perturbations <- function(dose_pars, pars0, alpha_pars, alphas, pe
                          dose_name = names(dose_par),
                          dose_par = dose_par),
                          algo_results)
-        # list(r_0 = list(r_0 %>% round(2)),
-        #      pars_perturbed = list(myperturbation),
-        #      alpha = alpha,
-        #      dose_name = names(dose_par),
-        #      dose_par = dose_par,
-        # algo_results = algo_results)
+
       }, mc.cores = cores) %>%
-        do.call(rbind,.)
+        bind_rows
     }) %>%
-      do.call(rbind,.)
+      bind_rows
   }) %>%
-    do.call(rbind,.)
+    bind_rows
 }
 
 

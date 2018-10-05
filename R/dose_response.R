@@ -67,7 +67,7 @@ combine_dr_list <- function(dr_list) {
     unique()
 
   dr_list %>%
-    seq_along() %>%
+    seq_along %>%
     lapply(function(i) {
       not_in_i <- dr_list_names[! dr_list_names %in% names(dr_list[[i]])]
       if(length(not_in_i)==0) {
