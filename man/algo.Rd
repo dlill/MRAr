@@ -4,25 +4,25 @@
 \alias{algo}
 \title{Run the algorithm}
 \usage{
-algo(pars, which_alpha_pars, alpha_pars, alpha, g, xs, p_log,
-  which_pars_perturbed)
+algo(pars, which_pars_perturbed, which_alpha_pars, alpha_pars, alpha, g, xs,
+  p_log)
 }
 \arguments{
-\item{pars}{pars}
+\item{pars}{pars. The parameters used to sim}
 
-\item{which_alpha_pars}{names of the alpha pars used}
+\item{which_pars_perturbed}{character. which pars are used to perturb the system?}
 
-\item{alpha_pars}{alpha pars}
+\item{which_alpha_pars}{names of the alpha pars used, i.e. which complexes are measured?}
 
-\item{alpha}{numeric 1L.}
+\item{alpha_pars}{the parameters which are used for weighting the complexes}
 
-\item{g}{observation funciton}
+\item{alpha}{numeric 1L. The value of the free parameters, at which the two matrices are compared to see if a sign switch occured.}
+
+\item{g}{observation function}
 
 \item{xs}{steady state prediction function}
 
 \item{p_log}{parameter trafo}
-
-\item{which_pars_perturbed}{character. which pars are perturbed}
 }
 \value{
 a tibble with r0, r1, rkep and ropt

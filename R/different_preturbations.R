@@ -40,7 +40,6 @@ run_different_perturbations <- function(dose_pars, pars0, alpha_pars, alphas, pe
         if(inherits(r_0, "try-error")) return(NULL)
 
         algo <- function(which_alpha_pars, prefix = NULL) {
-# browser()
           if (any(!(which_alpha_pars %in% names(alpha_pars))))
             stop("some alpha_pars in alpha_pars_settings which don't exist in alpha_pars")
 

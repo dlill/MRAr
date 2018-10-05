@@ -2,25 +2,25 @@
 #'
 #' This function has a lot of arguments, to ensure that each object is the correct one
 #'
-#' @param pars pars
-#' @param which_alpha_pars names of the alpha pars used
-#' @param alpha_pars alpha pars
-#' @param alpha numeric 1L.
-#' @param g observation funciton
+#' @param pars pars. The parameters used to sim
+#' @param which_pars_perturbed character. which pars are used to perturb the system?
+#' @param which_alpha_pars names of the alpha pars used, i.e. which complexes are measured?
+#' @param alpha_pars the parameters which are used for weighting the complexes
+#' @param alpha numeric 1L. The value of the free parameters, at which the two matrices are compared to see if a sign switch occured.
+#' @param g observation function
 #' @param xs steady state prediction function
 #' @param p_log parameter trafo
-#' @param which_pars_perturbed character. which pars are perturbed
 #'
 #' @return a tibble with r0, r1, rkep and ropt
 #' @export
 algo <- function(pars,
+                 which_pars_perturbed,
                  which_alpha_pars,
                  alpha_pars,
                  alpha,
                  g,
                  xs,
-                 p_log,
-                 which_pars_perturbed) {
+                 p_log) {
   if (any(!(which_alpha_pars %in% names(alpha_pars))))
     stop("some alpha_pars in alpha_pars_settings which don't exist in alpha_pars")
 
