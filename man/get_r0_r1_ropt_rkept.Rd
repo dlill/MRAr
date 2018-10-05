@@ -4,7 +4,7 @@
 \alias{get_r0_r1_ropt_rkept}
 \title{Get the relevant matrices for a perturbation and alpha-setting}
 \usage{
-get_r0_r1_ropt_rkept(results, a, pp, pars, xs, obs_fun, p_log)
+get_r0_r1_ropt_rkept(results, a, pp)
 }
 \arguments{
 \item{results}{as is from runbg}
@@ -12,8 +12,6 @@ get_r0_r1_ropt_rkept(results, a, pp, pars, xs, obs_fun, p_log)
 \item{a}{alpha value}
 
 \item{pp}{names of perturbed parameters}
-
-\item{pars, xs, obs_fun, p_log}{objects that were used to generate the result}
 }
 \value{
 list of matrices

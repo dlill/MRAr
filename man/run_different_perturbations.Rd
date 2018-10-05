@@ -2,7 +2,7 @@
 % Please edit documentation in R/different_preturbations.R
 \name{run_different_perturbations}
 \alias{run_different_perturbations}
-\title{Run a set of dirreent perturbations over varying alphas and a parameter which can be varied}
+\title{Run a set of different perturbations over varying alphas and a parameter which can be varied}
 \usage{
 run_different_perturbations(dose_pars, pars0, alpha_pars, alphas, perturbations,
   xs, p_log, p_pert, g, cores, alpha_par_settings)
@@ -34,5 +34,5 @@ run_different_perturbations(dose_pars, pars0, alpha_pars, alphas, perturbations,
 a tibble
 }
 \description{
-Run a set of dirreent perturbations over varying alphas and a parameter which can be varied
+Run a set of different perturbations over varying alphas and a parameter which can be varied
 }

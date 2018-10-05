@@ -3,6 +3,7 @@
 export(R_fun)
 export(R_fun_2)
 export(Xs_steady)
+export(algo)
 export(cluster_matrices_and_print_perturbations)
 export(combine_dr_list)
 export(dose_response_fun)

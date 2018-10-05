@@ -1,4 +1,4 @@
-#' Run a set of dirreent perturbations over varying alphas and a parameter which can be varied
+#' Run a set of different perturbations over varying alphas and a parameter which can be varied
 #'
 #' @param dose_pars dosages eg  setNames(1:10, "x1")
 #' @param pars0 the "default" pars for the model
@@ -86,23 +86,20 @@ run_different_perturbations <- function(dose_pars, pars0, alpha_pars, alphas, pe
           return(out)
         }
 
-        algo_results <- imap(alpha_par_settings, ~try(algo(.x, .y)))# %>% bind_cols
+        algo_results <- imap(alpha_par_settings, ~try(algo(.x, .y))) %>% bind_cols
 
-        # to_upstream_module <- algo(c("a_tox_Cxy", "a_toy_Cyz", "a_toz_Czx"), "upstream")
-        # to_both_modules <- algo(c("a_Cxy", "a_Cyz", "a_Czx"), "both")
-
-        # bind_cols(tibble(r_0 = list(r_0 %>% round(2)),
-        #                  pars_perturbed = list(myperturbation),
-        #                  alpha = alpha,
-        #                  dose_name = names(dose_par),
-        #                  dose_par = dose_par),
-        #           algo_results)
-        list(r_0 = list(r_0 %>% round(2)),
-             pars_perturbed = list(myperturbation),
-             alpha = alpha,
-             dose_name = names(dose_par),
-             dose_par = dose_par,
-        algo_results = algo_results)
+        bind_cols(tibble(r_0 = list(r_0 %>% round(2)),
+                         pars_perturbed = list(myperturbation),
+                         alpha = alpha,
+                         dose_name = names(dose_par),
+                         dose_par = dose_par),
+                         algo_results)
+        # list(r_0 = list(r_0 %>% round(2)),
+        #      pars_perturbed = list(myperturbation),
+        #      alpha = alpha,
+        #      dose_name = names(dose_par),
+        #      dose_par = dose_par,
+        # algo_results = algo_results)
       }, mc.cores = cores) %>%
         do.call(rbind,.)
     }) %>%
@@ -150,20 +147,14 @@ cluster_matrices_and_print_perturbations <- function(results_unnested_matrices, 
 #' @param results as is from runbg
 #' @param a alpha value
 #' @param pp names of perturbed parameters
-#' @param pars,xs,obs_fun,p_log objects that were used to generate the result
 #'
 #' @return list of matrices
 #' @export
-get_r0_r1_ropt_rkept <- function(results, a, pp, pars, xs, obs_fun, p_log) {
+get_r0_r1_ropt_rkept <- function(results, a, pp) {
   myresults <- filter(results, alpha == a, map_lgl(pars_perturbed, . %>% names %>% identical(pp)))
-
-  p_pert <- p_pert_fun(myresults$pars_perturbed[[1]], pars, NULL)
-  perturbation_prediction <- (xs*p_log*p_pert)(c(0,Inf), pars, deriv = F)
-  r_1 <-  r_alpha_fun(pars_opt = myresults$parframes[[1]] %>% as.parvec %>% unclass %>%  `*`(0),
-                      pars = pars,
-                      perturbation_prediction = perturbation_prediction,
-                      p_fun = (p_log*p_pert),
-                      obs_fun = g) %>% round(2)
-
-  list(perturbed_parameters = t(pp), r_0 = myresults$r_0[[1]], r_1 = r_1, r_opt = myresults$r_opt[[1]] %>% round(2), r_kept = myresults$r_kept[[1]])
+  list(perturbed_parameters = t(pp),
+       r_0 = myresults$r_0[[1]],
+       r_1 =  myresults$r_1upstream[[1]] %>% round(2),
+       r_opt = myresults$r_optupstream[[1]] %>% round(2),
+       r_kept = myresults$r_keptupstream[[1]])
 }
