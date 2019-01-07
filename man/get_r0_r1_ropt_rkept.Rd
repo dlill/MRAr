@@ -4,10 +4,12 @@
 \alias{get_r0_r1_ropt_rkept}
 \title{Get the relevant matrices for a perturbation and alpha-setting}
 \usage{
-get_r0_r1_ropt_rkept(results, a, pp)
+get_r0_r1_ropt_rkept(results, dose_par, a, pp)
 }
 \arguments{
 \item{results}{as is from runbg}
+
+\item{dose_par}{value of the "dose"-parameter}
 
 \item{a}{alpha value}
 

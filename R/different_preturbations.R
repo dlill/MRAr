@@ -117,7 +117,7 @@ cluster_matrices_and_print_perturbations <- function(results_unnested_matrices, 
     filter(near(alpha, a)) %>%
     select(starts_with(col_start)) %>%
     {.} %T>% {set.seed(1)} %>%
-    kmeans(nclust) %>%
+    kmeans(nclust, iter.max = 20, nstart = 5) %>%
     {.} %T>% print(digits = 2) %>%
     {.}
 
@@ -139,13 +139,17 @@ cluster_matrices_and_print_perturbations <- function(results_unnested_matrices, 
 #' Get the relevant matrices for a perturbation and alpha-setting
 #'
 #' @param results as is from runbg
+#' @param dose_par value of the "dose"-parameter
 #' @param a alpha value
 #' @param pp names of perturbed parameters
 #'
 #' @return list of matrices
 #' @export
-get_r0_r1_ropt_rkept <- function(results, a, pp) {
-  myresults <- filter(results, alpha == a, map_lgl(pars_perturbed, . %>% names %>% identical(pp)))
+get_r0_r1_ropt_rkept <- function(results, dose_par, a, pp) {
+  myresults <- filter(results,
+                      dose_par == dose_par,
+                      alpha == a,
+                      map_lgl(pars_perturbed, . %>% names %>% identical(pp)))
   list(perturbed_parameters = t(pp),
        r_0 = myresults$r_0[[1]],
        r_1 =  myresults$r_1upstream[[1]] %>% round(2),
