@@ -4,8 +4,8 @@
 \alias{r_opt_dose_response}
 \title{Compute dose responses for one parameter}
 \usage{
-r_opt_dose_response(which_par, dosages, alpha_scan_range = seq(-9, 9, by = 2),
-  pars_opt, obs_fun, p_fun, pars,
+r_opt_dose_response(which_par, dosages, alpha_scan_range = seq(-9, 9, by
+  = 2), pars_opt, obs_fun, p_fun, pars,
   pars_opt_default_value = log(.Machine$double.eps), cores = 1)
 }
 \arguments{

@@ -4,8 +4,8 @@
 \alias{scan_grid}
 \title{Scan a n-d grid of free parameters}
 \usage{
-scan_grid(which_par, dosages, alpha_scan_range = seq(-9, 9, by = 2), pars_opt,
-  obs_fun, p_fun, pars, grid_points_fine = alpha_scan_range,
+scan_grid(which_par, dosages, alpha_scan_range = seq(-9, 9, by = 2),
+  pars_opt, obs_fun, p_fun, pars, grid_points_fine = alpha_scan_range,
   grid_points_raw = c(-9, 0, 2))
 }
 \arguments{

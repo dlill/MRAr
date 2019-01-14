@@ -4,8 +4,8 @@
 \alias{obj_alpha_no_derivs}
 \title{Objective function which doesn't compute derivatives}
 \usage{
-obj_alpha_no_derivs(pars_opt, perturbation_prediction, r_kept, obs_fun, p_fun,
-  mypars)
+obj_alpha_no_derivs(pars_opt, perturbation_prediction, r_kept, obs_fun,
+  p_fun, mypars)
 }
 \arguments{
 \item{perturbation_prediction}{Simulated steady state perturbation data}

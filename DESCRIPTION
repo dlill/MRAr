@@ -9,10 +9,10 @@ License: What license is it under?
 LazyData: TRUE
 Depends:
     conveniencefunctions
-Imports:rootSolve,
+Imports: rootSolve,
     deSolve,
     dMod,
     numDeriv,
     shiny,
     miniUI
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

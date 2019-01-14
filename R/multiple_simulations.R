@@ -82,7 +82,7 @@ run_simulations <- function(ic_list = NULL,
         # print(myr)
         return(r_kept_fun2(r_0,myr))
       }) %>%
-        add(seq(0,0.05,length.out = 9)) %>%  # könnte man evtl auch mit "jitter" lösen
+        add(seq(0,0.05,length.out = 9)) %>%
         t %>%
         structure(. , dimnames = list(NULL, r_names_0)) %>%
         cbind(alpha = alpha_scan_range, .) %>%

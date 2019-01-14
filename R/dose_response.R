@@ -156,19 +156,15 @@ r_opt_dose_response <- function(which_par,
         matrix(nrow = length(module_names))
       # print(myr)
       return(r_kept_fun2(r_0,myr))
-    }) %>%
-      {.+(seq(0,0.05,length.out = length(r_names_0)))} %>%  # könnte man evtl auch mit "jitter" lösen
+    })
+    r_kept_df <- r_kept_df + seq(0,0.05,length.out = length(r_names_0))
+    r_kept_df <- r_kept_df %>%
       t %>%
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
       gather(key = "r_element", value = "r_kept", rlang::UQS(rlang::syms(r_names_0)))
 
-    # r_kept <- r_kept_df  %>%  # könnte man evtl auch mit "jitter" lösen
-    #   extract2(2) %>%
-    #   is_greater_than(0.5) %>%
-    #   matrix(ncol = (obs_fun %>% attr("ma") %>% extract2(1) %>% attr("eq") %>% length)) %>%
-    #   t()
 
     # determine the alpha values at which a sign flip occured.
     flipped <- r_kept_df %>%
@@ -339,27 +335,22 @@ r_opt_dose_response_separate_scanning <- function(which_par,
                        p_fun = p_fun,
                        pars = pars)
 
-    # r_kept
     r_kept_df <- sapply(alpha_scan_range, function(a) {
       myr <- r_alpha_df %>%
         dplyr::filter(alpha == a) %>%
         .[["r_alpha"]] %>%
-        matrix(nrow = length(modules0))
+        matrix(nrow = length(module_names))
       # print(myr)
       return(r_kept_fun2(r_0,myr))
-    }) %>%
-      {.+(seq(0,0.05,length.out = length(r_names_0)))} %>%  # könnte man evtl auch mit "jitter" lösen
+    })
+    r_kept_df <- r_kept_df + seq(0,0.05,length.out = length(r_names_0))
+    r_kept_df <- r_kept_df %>%
       t %>%
       structure(. , dimnames = list(NULL, r_names_0)) %>%
       cbind(alpha = alpha_scan_range, .) %>%
       as.data.frame(stringsAsFactors =  F) %>%
-      tidyr::gather(key = "r_element", value = "r_kept", rlang::UQS(rlang::syms(r_names_0)))
+      gather(key = "r_element", value = "r_kept", rlang::UQS(rlang::syms(r_names_0)))
 
-    # r_kept <- r_kept_df  %>%  # könnte man evtl auch mit "jitter" lösen
-    #   extract2(2) %>%
-    #   is_greater_than(0.5) %>%
-    #   matrix(ncol = (obs_fun %>% attr("ma") %>% extract2(1) %>% attr("eq") %>% length)) %>%
-    #   t()
 
     # determine the alpha values at which a sign flip occured.
     flipped <- r_kept_df %>%
