@@ -4,16 +4,14 @@
 #'
 #' @param errorpars list of vectors with absolute and relative errors: list(setting1 = c(sabs = 0, srel = 0.1))
 #' @param N number of realizations for each setting
-#' @param nreplicates number of replicates. normally distributed noise is assumed, replicates are averaged before starteing the algorithm
 #'
 #' @return tibble
 #' @export
 #'
 #' @seealso [run_different_perturbations()]
-run_different_perturbations_noisy_with_replicates <- function(dose_pars, pars0, alpha_pars, alphas, perturbations, xs, p_log, p_pert, g, cores, alpha_par_settings,
+run_different_perturbations_noisy <- function(dose_pars, pars0, alpha_pars, alphas, perturbations, xs, p_log, p_pert, g, cores, alpha_par_settings,
                                               errorpars,
-                                              N = 100,
-                                              nreplicates = 3
+                                              N = 100
 ) {
 
   # ---------------------------------------------------------- #
@@ -106,13 +104,6 @@ run_different_perturbations_noisy_with_replicates <- function(dose_pars, pars0, 
           mclapply(seq_len(N), function(i) {
             set.seed(i)
             perturbation_prediction <- map(perturbation_prediction, function(.x) .x + rnorm(length(.x), 0, sabs + srel * .x))
-            replicates <- map(seq_len(nreplicates), function(repl) {
-              perturbation_prediction <- map(perturbation_prediction, function(.x) .x + rnorm(length(.x), 0, sabs + srel * .x))
-            })
-
-            perturbation_prediction <- replicates %>% transpose() %>% map(~do.call(rbind, .x) %>% colMeans %>% t)
-
-
 
             try({r_0 <- R_fun(pars_opt = alpha_pars,
                               perturbation_prediction = perturbation_prediction,

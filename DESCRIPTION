@@ -11,8 +11,8 @@ Depends:
     conveniencefunctions
 Imports: rootSolve,
     deSolve,
-    dMod,
     numDeriv,
     shiny,
-    miniUI
+    miniUI,
+    dMod
 RoxygenNote: 6.1.0

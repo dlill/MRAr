@@ -238,3 +238,8 @@ Xs_steady <- function(odemodel, forcings=NULL, events=NULL, names = NULL, condit
 
 
 }
+
+
+#' This function is needed such that the new mstrust works with functions other than fn's
+#' @export
+mname.function <- function(x, conditions = NULL) {return(NULL)}
