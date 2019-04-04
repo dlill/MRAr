@@ -79,18 +79,18 @@ run_different_perturbations_noisy_with_replicates <- function(dose_pars, pars0, 
 
     pars[names(dose_par)] <- dose_par
 
-    # ----------------------------------------------- #
-    # .. 2 alphas ----
-    # define different alpha values at which the algorithm is run
-    # ----------------------------------------------- #
-    map(alphas, function(alpha) {
       # ----------------------------------------------- #
-      # .. 3 perturbations ----
+      # .. 2 perturbations ----
       # different perturbations
       # ----------------------------------------------- #
       map(perturbations, function(myperturbation) {
         p_pert <- p_pert_fun(myperturbation, pars = pars, modelname = NULL)
         perturbation_prediction <- (xs*p_log*p_pert)(c(0,Inf), pars, deriv = F)
+        # ----------------------------------------------- #
+        # .. 3 alphas ----
+        # define different alpha values at which the algorithm is run
+        # ----------------------------------------------- #
+        map(alphas, function(alpha) {
 
 
         # ----------------------------------------------- #
