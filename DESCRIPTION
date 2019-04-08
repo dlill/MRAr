@@ -1,11 +1,11 @@
 Package: MRAr
 Type: Package
 Title: Functions to do MRA with
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Daniel", "Lill", email = "daniel.lill@physik.uni-freiburg.de", role = c("aut", "cre"))
 Description: This is a collection of functions to do simulations with Modular Response Analysis.
   It highly depends on dMod.
-License: What license is it under?
+License: MIT License
 LazyData: TRUE
 Depends:
     conveniencefunctions
