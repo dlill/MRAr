@@ -136,7 +136,8 @@ run_different_perturbations_noisy_with_replicates <- function(dose_pars, pars0, 
                                                dose_name = names(dose_par),
                                                dose_par = dose_par,
                                                realization = i, srel = srel, sabs = sabs,
-                                               replicates = list(replicates)),
+                                               replicates = list(replicates),
+                                               perturbation_prediction = list(perturbation_prediction)),
                                         algo_results.i)
             return(algo_results.i)
 
